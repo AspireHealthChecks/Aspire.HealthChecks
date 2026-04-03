@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Remove="Microsoft.Extensions.Diagnostics.HealthChecks" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="prometheus-net" />
   </ItemGroup>
