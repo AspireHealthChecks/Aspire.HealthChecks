@@ -48,6 +48,39 @@ jobs:
           echo "::error::The token must have write access to ${DOCS_EXTERNAL_REPOSITORY}."
           exit 1
 
+      - name: Validate token access to target repository
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          user_api="https://api.github.com/user"
+          repo_api="https://api.github.com/repos/${DOCS_EXTERNAL_REPOSITORY}"
+          auth_header="Authorization: Bearer ${GH_TOKEN}"
+          accept_header="Accept: application/vnd.github+json"
+
+          user_response="$(curl -fsSL -H "$auth_header" -H "$accept_header" "$user_api")"
+          actor_login="$(printf '%s' "$user_response" | jq -r '.login // empty')"
+
+          repo_status="$(curl -sS -o "$RUNNER_TEMP/docs-pages-target-repo.json" -w '%{http_code}' -H "$auth_header" -H "$accept_header" "$repo_api")"
+
+          if [ "$repo_status" != "200" ]; then
+            echo "::error::PAGES_DEPLOY_TOKEN for '$actor_login' cannot access ${DOCS_EXTERNAL_REPOSITORY}. GitHub API returned HTTP $repo_status."
+            echo "::error::Grant that account access to the target repository and ensure the PAT is authorized for it."
+            exit 1
+          fi
+
+          can_push="$(jq -r '.permissions.push // false' "$RUNNER_TEMP/docs-pages-target-repo.json")"
+
+          if [ "$can_push" != "true" ]; then
+            echo "::error::PAGES_DEPLOY_TOKEN belongs to '$actor_login' but does not have push access to ${DOCS_EXTERNAL_REPOSITORY}."
+            echo "::error::Add that account as a collaborator/team member, or create a PAT with Contents: Read and write for the target repository."
+            exit 1
+          fi
+
+          echo "Verified push access to ${DOCS_EXTERNAL_REPOSITORY} for '$actor_login'."
+
       - name: Deploy to dotnetdiag.github.io with personal access token
         uses: peaceiris/actions-gh-pages@v4
         with:
