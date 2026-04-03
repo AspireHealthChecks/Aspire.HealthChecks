@@ -1,10 +1,7 @@
-name: HealthChecks AzureDigitalTwin Preview CD
+name: Legacy HealthChecks AzureDigitalTwin Preview CD
 
 on:
-  push:
-    tags:
-      - preview-azure_digitaltwin-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

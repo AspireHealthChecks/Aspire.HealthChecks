@@ -1,10 +1,7 @@
-name: HealthChecks RavenDb Preview CD
+name: Legacy HealthChecks RavenDb Preview CD
 
 on:
-  push:
-    tags:
-      - preview-ravendb-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks Elastic Search CD
+name: Legacy HealthChecks Elastic Search CD
 
 on:
-  push:
-    tags:
-      - release-elasticsearch-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

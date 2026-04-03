@@ -1,10 +1,7 @@
-name: HealthChecks AzureServiceBus DB CD
+name: Legacy HealthChecks AzureServiceBus DB CD
 
 on:
-  push:
-    tags:
-      - release-azureservicebus-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks Publisher.Seq CD
+name: Legacy HealthChecks Publisher.Seq CD
 
 on:
-  push:
-    tags:
-      - release-publisher_seq-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

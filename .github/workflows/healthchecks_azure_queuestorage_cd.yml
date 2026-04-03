@@ -1,10 +1,7 @@
-name: HealthChecks Azure Blob Storage CD
+name: Legacy HealthChecks Azure Blob Storage CD
 
 on:
-  push:
-    tags:
-      - release-azurequeuestorage-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

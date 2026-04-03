@@ -1,10 +1,7 @@
-name: HealthChecks Aws Systems Manager CD
+name: Legacy HealthChecks Aws Systems Manager CD
 
 on:
-  push:
-    tags:
-      - release-aws_systemsmanager-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

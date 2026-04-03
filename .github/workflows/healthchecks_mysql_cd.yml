@@ -1,10 +1,7 @@
-name: HealthChecks MySql CD
+name: Legacy HealthChecks MySql CD
 
 on:
-  push:
-    tags:
-      - release-mysql-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks DynamoDb CD
+name: Legacy HealthChecks DynamoDb CD
 
 on:
-  push:
-    tags:
-      - release-dynamodb-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

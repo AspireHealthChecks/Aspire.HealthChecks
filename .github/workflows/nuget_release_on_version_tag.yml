@@ -17,6 +17,9 @@ jobs:
       matrix: ${{ steps.detect.outputs.matrix }}
       package_version: ${{ steps.version.outputs.package_version }}
       previous_tag: ${{ steps.previous.outputs.tag }}
+      release_mode: ${{ steps.detect.outputs.release_mode }}
+      release_reason: ${{ steps.detect.outputs.release_reason }}
+      package_count: ${{ steps.detect.outputs.package_count }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -32,8 +35,8 @@ jobs:
         shell: bash
         run: |
           tag_name="${GITHUB_REF_NAME}"
-          if [[ ! "$tag_name" =~ ^v([0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?)$ ]]; then
-            echo "Tag '$tag_name' is not a supported semantic version tag." >&2
+          if [[ ! "$tag_name" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Tag '$tag_name' must match the format vA.B.C." >&2
             exit 1
           fi
 
@@ -51,6 +54,12 @@ jobs:
           PREVIOUS_TAG: ${{ steps.previous.outputs.tag }}
         run: |
           set -euo pipefail
+
+          current_tag="${GITHUB_REF_NAME}"
+          current_version="${current_tag#v}"
+          current_major_minor="${current_version%.*}"
+          release_mode="incremental"
+          release_reason="Patch version changed; building only packages changed since the previous version tag."
 
           global_files=(
             "Directory.Build.props"
@@ -71,6 +80,17 @@ jobs:
           build_all=false
           if [ -z "$PREVIOUS_TAG" ]; then
             build_all=true
+            release_mode="full"
+            release_reason="No previous version tag was found, so all packages will be published."
+          else
+            previous_version="${PREVIOUS_TAG#v}"
+            previous_major_minor="${previous_version%.*}"
+
+            if [ "$current_major_minor" != "$previous_major_minor" ]; then
+              build_all=true
+              release_mode="full"
+              release_reason="Major or minor version changed from $PREVIOUS_TAG to $current_tag, so all packages will be published."
+            fi
           fi
 
           global_changed=false
@@ -78,12 +98,15 @@ jobs:
             for global_file in "${global_files[@]}"; do
               if printf '%s\n' "${changed_files[@]}" | grep -Fxq "$global_file"; then
                 global_changed=true
+                release_mode="full"
+                release_reason="Shared build or dependency file '$global_file' changed, so all packages will be published."
                 break
               fi
             done
           fi
 
           entries=()
+          package_ids=()
           while IFS= read -r project_path; do
             [ -z "$project_path" ] && continue
 
@@ -104,10 +127,37 @@ jobs:
             if [ "$project_changed" = true ]; then
               package_id=$(dotnet msbuild "$project_path" -nologo -getProperty:PackageId | tail -n 1)
               entries+=("{\"project_path\":\"./$project_path\",\"package_id\":\"$package_id\"}")
+              package_ids+=("$package_id")
             fi
           done < <(find src -name '*.csproj' | sort)
 
-          if [ ${#entries[@]} -eq 0 ]; then
+          package_count=${#entries[@]}
+
+          echo "release_mode=$release_mode" >> "$GITHUB_OUTPUT"
+          echo "release_reason=$release_reason" >> "$GITHUB_OUTPUT"
+          echo "package_count=$package_count" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## NuGet Release Summary"
+            echo
+            echo "- Current tag: \`$current_tag\`"
+            echo "- Previous tag: \`${PREVIOUS_TAG:-<none>}\`"
+            echo "- Package version: \`$current_version\`"
+            echo "- Release mode: \`$release_mode\`"
+            echo "- Reason: $release_reason"
+            echo "- Packages selected: $package_count"
+            echo
+            if [ "$package_count" -gt 0 ]; then
+              echo "### Packages"
+              for package_id in "${package_ids[@]}"; do
+                echo "- \`$package_id\`"
+              done
+            else
+              echo "No packages selected for publication."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$package_count" -eq 0 ]; then
             echo 'has_packages=false' >> "$GITHUB_OUTPUT"
             echo 'matrix=[]' >> "$GITHUB_OUTPUT"
             exit 0

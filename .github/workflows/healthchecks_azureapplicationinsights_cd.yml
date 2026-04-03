@@ -1,10 +1,7 @@
-name: HealthChecks AzureApplicationInsights CD
+name: Legacy HealthChecks AzureApplicationInsights CD
 
 on:
-  push:
-    tags:
-      - release-azureapplicationinsights-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

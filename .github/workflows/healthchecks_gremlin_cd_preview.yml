@@ -1,10 +1,7 @@
-name: HealthChecks Gremlin Preview CD
+name: Legacy HealthChecks Gremlin Preview CD
 
 on:
-  push:
-    tags:
-      - preview-gremlin-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

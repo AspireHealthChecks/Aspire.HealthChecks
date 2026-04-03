@@ -1,10 +1,7 @@
-name: HealthChecks Hangfire Preview CD
+name: Legacy HealthChecks Hangfire Preview CD
 
 on:
-  push:
-    tags:
-      - preview-hangfire-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

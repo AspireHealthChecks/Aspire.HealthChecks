@@ -1,10 +1,7 @@
-name: HealthChecks RabbitMQ Preview CD
+name: Legacy HealthChecks RabbitMQ Preview CD
 
 on:
-  push:
-    tags:
-      - preview-rabbitmq-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks EventStore CD
+name: Legacy HealthChecks EventStore CD
 
 on:
-  push:
-    tags:
-      - release-eventstore-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

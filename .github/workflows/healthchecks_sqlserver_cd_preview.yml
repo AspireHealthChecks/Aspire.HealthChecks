@@ -1,10 +1,7 @@
-name: HealthChecks SQL Server DB Preview CD
+name: Legacy HealthChecks SQL Server DB Preview CD
 
 on:
-  push:
-    tags:
-      - preview-sqlserver-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

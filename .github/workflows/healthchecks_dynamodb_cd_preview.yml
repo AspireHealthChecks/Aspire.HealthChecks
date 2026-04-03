@@ -1,10 +1,7 @@
-name: HealthChecks DynamoDb Preview CD
+name: Legacy HealthChecks DynamoDb Preview CD
 
 on:
-  push:
-    tags:
-      - preview-dynamodb-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

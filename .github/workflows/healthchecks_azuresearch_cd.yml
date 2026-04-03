@@ -1,10 +1,7 @@
-name: HealthChecks AzureSearch CD
+name: Legacy HealthChecks AzureSearch CD
 
 on:
-  push:
-    tags:
-      - release-azuresearch-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

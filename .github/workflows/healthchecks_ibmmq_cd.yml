@@ -1,10 +1,7 @@
-name: HealthChecks IbmMQ CD
+name: Legacy HealthChecks IbmMQ CD
 
 on:
-  push:
-    tags:
-      - release-ibmq-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks CosmosDb CD
+name: Legacy HealthChecks CosmosDb CD
 
 on:
-  push:
-    tags:
-      - release-cosmosdb-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

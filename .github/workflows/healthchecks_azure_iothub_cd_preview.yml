@@ -1,10 +1,7 @@
-name: HealthChecks Azure.IoTHub Preview CD
+name: Legacy HealthChecks Azure.IoTHub Preview CD
 
 on:
-  push:
-    tags:
-      - preview-azure_iothub-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

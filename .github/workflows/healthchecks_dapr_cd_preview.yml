@@ -1,10 +1,7 @@
-name: HealthChecks Dapr Preview CD
+name: Legacy HealthChecks Dapr Preview CD
 
 on:
-  push:
-    tags:
-      - preview-dapr-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

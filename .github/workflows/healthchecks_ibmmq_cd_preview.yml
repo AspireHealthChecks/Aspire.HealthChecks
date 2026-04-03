@@ -1,10 +1,7 @@
-name: HealthChecks IbmMQ Preview CD
+name: Legacy HealthChecks IbmMQ Preview CD
 
 on:
-  push:
-    tags:
-      - preview-ibmmq-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

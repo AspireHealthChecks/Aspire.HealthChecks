@@ -1,10 +1,7 @@
-name: HealthChecks Uris CD
+name: Legacy HealthChecks Uris CD
 
 on:
-  push:
-    tags:
-      - release-uris-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

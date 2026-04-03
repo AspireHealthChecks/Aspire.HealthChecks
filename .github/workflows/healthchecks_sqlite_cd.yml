@@ -1,10 +1,7 @@
-name: HealthChecks Sqlite CD
+name: Legacy HealthChecks Sqlite CD
 
 on:
-  push:
-    tags:
-      - release-sqlite-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

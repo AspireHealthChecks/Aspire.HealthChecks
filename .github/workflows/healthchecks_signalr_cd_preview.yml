@@ -1,10 +1,7 @@
-name: HealthChecks SignalR Preview CD
+name: Legacy HealthChecks SignalR Preview CD
 
 on:
-  push:
-    tags:
-      - preview-signalr-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

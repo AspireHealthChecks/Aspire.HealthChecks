@@ -1,10 +1,7 @@
-name: HealthChecks InfluxDB Preview CD
+name: Legacy HealthChecks InfluxDB Preview CD
 
 on:
-  push:
-    tags:
-      - preview-influxdb-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

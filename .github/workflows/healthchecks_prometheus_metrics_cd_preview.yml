@@ -1,10 +1,7 @@
-name: HealthChecks Prometheus.Metrics Preview CD
+name: Legacy HealthChecks Prometheus.Metrics Preview CD
 
 on:
-  push:
-    tags:
-      - preview-prometheus_metrics-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

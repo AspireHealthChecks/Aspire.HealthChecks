@@ -1,10 +1,7 @@
-name: HealthChecks Aws Sqs CD
+name: Legacy HealthChecks Aws Sqs CD
 
 on:
-  push:
-    tags:
-      - release-aws_sqs-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

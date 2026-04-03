@@ -1,10 +1,7 @@
-name: HealthChecks Publisher.Datadog Preview CD
+name: Legacy HealthChecks Publisher.Datadog Preview CD
 
 on:
-  push:
-    tags:
-      - preview-publisher_datadog-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks Azure EventHubs CD
+name: Legacy HealthChecks Azure EventHubs CD
 
 on:
-  push:
-    tags:
-      - release-azureeventhubs-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

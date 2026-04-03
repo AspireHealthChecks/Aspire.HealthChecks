@@ -1,10 +1,7 @@
-name: HealthChecks Kubernetes Preview CD
+name: Legacy HealthChecks Kubernetes Preview CD
 
 on:
-  push:
-    tags:
-      - preview-kubernetes-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

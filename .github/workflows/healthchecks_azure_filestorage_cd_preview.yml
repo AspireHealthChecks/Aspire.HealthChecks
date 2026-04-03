@@ -1,10 +1,7 @@
-name: HealthChecks Azure File Storage Preview CD
+name: Legacy HealthChecks Azure File Storage Preview CD
 
 on:
-  push:
-    tags:
-      - preview-azurefilestorage-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

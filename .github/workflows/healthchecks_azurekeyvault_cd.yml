@@ -1,10 +1,7 @@
-name: HealthChecks AzureKeyVault DB CD
+name: Legacy HealthChecks AzureKeyVault DB CD
 
 on:
-  push:
-    tags:
-      - release-azurekeyvault-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

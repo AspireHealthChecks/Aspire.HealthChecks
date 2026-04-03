@@ -1,10 +1,7 @@
-name: HealthChecks Network CD
+name: Legacy HealthChecks Network CD
 
 on:
-  push:
-    tags:
-      - release-network-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

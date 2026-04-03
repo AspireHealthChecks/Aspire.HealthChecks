@@ -1,10 +1,7 @@
-name: HealthChecks Aws Sns Preview CD
+name: Legacy HealthChecks Aws Sns Preview CD
 
 on:
-  push:
-    tags:
-      - preview-aws_sns-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

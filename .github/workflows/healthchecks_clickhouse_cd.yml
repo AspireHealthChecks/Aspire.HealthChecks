@@ -1,10 +1,7 @@
-name: HealthChecks ClickHouse DB CD
+name: Legacy HealthChecks ClickHouse DB CD
 
 on:
-  push:
-    tags:
-      - release-clickhouse-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

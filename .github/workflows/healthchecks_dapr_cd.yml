@@ -1,10 +1,7 @@
-name: HealthChecks Dapr CD
+name: Legacy HealthChecks Dapr CD
 
 on:
-  push:
-    tags:
-      - release-dapr-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

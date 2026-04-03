@@ -1,14 +1,11 @@
-name: HealthChecks UI Preview CD
+name: Legacy HealthChecks UI Preview CD
 
 permissions:
   contents: read
   packages: write
 
 on:
-  push:
-    tags:
-      - preview-ui-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

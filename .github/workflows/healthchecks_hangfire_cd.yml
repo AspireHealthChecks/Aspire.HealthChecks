@@ -1,10 +1,7 @@
-name: HealthChecks Hangfire CD
+name: Legacy HealthChecks Hangfire CD
 
 on:
-  push:
-    tags:
-      - release-hangfire-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

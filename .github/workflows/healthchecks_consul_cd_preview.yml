@@ -1,10 +1,7 @@
-name: HealthChecks Consul Preview CD
+name: Legacy HealthChecks Consul Preview CD
 
 on:
-  push:
-    tags:
-      - preview-consul-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

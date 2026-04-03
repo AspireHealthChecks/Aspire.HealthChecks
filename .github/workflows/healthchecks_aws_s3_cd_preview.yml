@@ -1,10 +1,7 @@
-name: HealthChecks Aws.S3 Preview CD
+name: Legacy HealthChecks Aws.S3 Preview CD
 
 on:
-  push:
-    tags:
-      - preview-aws_s3-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

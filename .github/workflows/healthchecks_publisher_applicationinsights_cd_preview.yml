@@ -1,10 +1,7 @@
-name: HealthChecks Publisher.ApplicationInsights Preview CD
+name: Legacy HealthChecks Publisher.ApplicationInsights Preview CD
 
 on:
-  push:
-    tags:
-      - preview-publisher_applicationinsights-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

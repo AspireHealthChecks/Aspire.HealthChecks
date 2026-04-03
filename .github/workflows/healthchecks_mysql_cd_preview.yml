@@ -1,10 +1,7 @@
-name: HealthChecks MySql Preview CD
+name: Legacy HealthChecks MySql Preview CD
 
 on:
-  push:
-    tags:
-      - preview-mysql-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

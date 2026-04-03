@@ -1,10 +1,7 @@
-name: HealthChecks Azure Blob Storage Preview CD
+name: Legacy HealthChecks Azure Blob Storage Preview CD
 
 on:
-  push:
-    tags:
-      - preview-azureblobstorage-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

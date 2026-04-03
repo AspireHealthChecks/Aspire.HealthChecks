@@ -1,10 +1,7 @@
-name: HealthChecks Publisher.Prometheus CD
+name: Legacy HealthChecks Publisher.Prometheus CD
 
 on:
-  push:
-    tags:
-      - release-publisher_prometheus-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

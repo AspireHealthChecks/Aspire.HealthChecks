@@ -1,10 +1,7 @@
-name: HealthChecks AzureSearch Preview CD
+name: Legacy HealthChecks AzureSearch Preview CD
 
 on:
-  push:
-    tags:
-      - preview-azuresearch-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

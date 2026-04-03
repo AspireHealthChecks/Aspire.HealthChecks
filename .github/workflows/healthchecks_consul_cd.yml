@@ -1,10 +1,7 @@
-name: HealthChecks Consul CD
+name: Legacy HealthChecks Consul CD
 
 on:
-  push:
-    tags:
-      - release-consul-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

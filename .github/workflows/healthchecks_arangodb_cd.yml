@@ -1,10 +1,7 @@
-name: HealthChecks Arango DB CD
+name: Legacy HealthChecks Arango DB CD
 
 on:
-  push:
-    tags:
-      - release-arangodb-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

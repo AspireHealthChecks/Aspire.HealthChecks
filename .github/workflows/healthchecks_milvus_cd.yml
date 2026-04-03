@@ -1,10 +1,7 @@
-name: HealthChecks Milvus CD
+name: Legacy HealthChecks Milvus CD
 
 on:
-  push:
-    tags:
-      - release-milvus-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

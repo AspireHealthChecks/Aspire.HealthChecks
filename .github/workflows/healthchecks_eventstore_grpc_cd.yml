@@ -1,10 +1,7 @@
-name: HealthChecks EventStore.gRPC CD
+name: Legacy HealthChecks EventStore.gRPC CD
 
 on:
-  push:
-    tags:
-      - release-eventstore_grpc-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks Elastic Search Preview CD
+name: Legacy HealthChecks Elastic Search Preview CD
 
 on:
-  push:
-    tags:
-      - preview-elasticsearch-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

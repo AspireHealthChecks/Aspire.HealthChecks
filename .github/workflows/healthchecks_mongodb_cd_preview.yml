@@ -1,10 +1,7 @@
-name: HealthChecks MongoDb Preview CD
+name: Legacy HealthChecks MongoDb Preview CD
 
 on:
-  push:
-    tags:
-      - preview-mongodb-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

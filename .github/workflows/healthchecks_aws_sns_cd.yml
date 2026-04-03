@@ -1,10 +1,7 @@
-name: HealthChecks Aws Sns CD
+name: Legacy HealthChecks Aws Sns CD
 
 on:
-  push:
-    tags:
-      - release-aws_sns-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

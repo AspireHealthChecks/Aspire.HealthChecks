@@ -1,10 +1,7 @@
-name: HealthChecks RavenDb CD
+name: Legacy HealthChecks RavenDb CD
 
 on:
-  push:
-    tags:
-      - release-ravendb-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

@@ -1,10 +1,7 @@
-name: HealthChecks Publisher.CloudWatch CD
+name: Legacy HealthChecks Publisher.CloudWatch CD
 
 on:
-  push:
-    tags:
-      - release-publisher_cloudwatch-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

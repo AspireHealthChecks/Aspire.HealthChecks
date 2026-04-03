@@ -1,10 +1,7 @@
-name: HealthChecks ClickHouse DB Preview CD
+name: Legacy HealthChecks ClickHouse DB Preview CD
 
 on:
-  push:
-    tags:
-      - preview-clickhouse-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

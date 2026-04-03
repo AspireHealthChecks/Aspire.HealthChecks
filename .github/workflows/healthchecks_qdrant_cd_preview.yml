@@ -1,10 +1,7 @@
-name: HealthChecks Qdrant Preview CD
+name: Legacy HealthChecks Qdrant Preview CD
 
 on:
-  push:
-    tags:
-      - preview-qdrant-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

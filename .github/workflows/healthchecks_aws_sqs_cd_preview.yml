@@ -1,10 +1,7 @@
-name: HealthChecks Aws Sqs Preview CD
+name: Legacy HealthChecks Aws Sqs Preview CD
 
 on:
-  push:
-    tags:
-      - preview-aws_sqs-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

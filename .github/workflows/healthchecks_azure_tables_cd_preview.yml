@@ -1,10 +1,7 @@
-name: HealthChecks Azure Table Storage Preview CD
+name: Legacy HealthChecks Azure Table Storage Preview CD
 
 on:
-  push:
-    tags:
-      - preview-azuretablestorage-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

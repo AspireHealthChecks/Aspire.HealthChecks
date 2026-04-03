@@ -1,10 +1,7 @@
-name: HealthChecks SendGrid CD
+name: Legacy HealthChecks SendGrid CD
 
 on:
-  push:
-    tags:
-      - release-sendgrid-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

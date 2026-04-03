@@ -1,10 +1,7 @@
-name: HealthChecks EventStore.gRPC Preview CD
+name: Legacy HealthChecks EventStore.gRPC Preview CD
 
 on:
-  push:
-    tags:
-      - preview-eventstore_grpc-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

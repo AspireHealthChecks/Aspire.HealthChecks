@@ -1,10 +1,7 @@
-name: HealthChecks Oracle CD
+name: Legacy HealthChecks Oracle CD
 
 on:
-  push:
-    tags:
-      - release-oracle-*
-      - release-all-*
+  workflow_dispatch:
 
 jobs:
   build:

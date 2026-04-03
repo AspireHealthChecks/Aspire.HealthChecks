@@ -1,10 +1,7 @@
-name: HealthChecks Redis Preview CD
+name: Legacy HealthChecks Redis Preview CD
 
 on:
-  push:
-    tags:
-      - preview-redis-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

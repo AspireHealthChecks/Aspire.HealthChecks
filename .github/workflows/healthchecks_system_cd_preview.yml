@@ -1,10 +1,7 @@
-name: HealthChecks System Preview CD
+name: Legacy HealthChecks System Preview CD
 
 on:
-  push:
-    tags:
-      - preview-system-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

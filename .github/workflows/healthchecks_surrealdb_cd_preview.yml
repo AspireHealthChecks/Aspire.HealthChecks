@@ -1,10 +1,7 @@
-name: HealthChecks SurrealDB Preview CD
+name: Legacy HealthChecks SurrealDB Preview CD
 
 on:
-  push:
-    tags:
-      - preview-surrealdb-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

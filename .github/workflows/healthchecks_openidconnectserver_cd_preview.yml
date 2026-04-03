@@ -1,10 +1,7 @@
-name: HealthChecks OpenIdConnectServer Preview CD
+name: Legacy HealthChecks OpenIdConnectServer Preview CD
 
 on:
-  push:
-    tags:
-      - preview-openidconnectserver-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:

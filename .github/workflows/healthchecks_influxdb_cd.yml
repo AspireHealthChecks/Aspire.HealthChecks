@@ -1,10 +1,7 @@
-name: HealthChecks InfluxDB CD
+name: Legacy HealthChecks InfluxDB CD
 
 on:
-  push:
-    tags:
-      - release-influxdb-*
-      - release-all-*
+  workflow_dispatch:
       
 jobs:
   build:

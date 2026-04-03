@@ -1,10 +1,7 @@
-name: HealthChecks Azure Queue Storage Preview CD
+name: Legacy HealthChecks Azure Queue Storage Preview CD
 
 on:
-  push:
-    tags:
-      - preview-azurequeuestorage-*
-      - preview-all-*
+  workflow_dispatch:
 
 jobs:
   build:
