@@ -1,4 +1,6 @@
-# Health Checks Kubernetes Operator
+---
+title: Health Checks Kubernetes Operator
+---
 
 This repository, offers a Kubernetes Operator that automatically deploys and configures the HealthChecks UI in k8s and also monitors labeled services that expose healthchecks in a given namespace.
 
@@ -244,17 +246,17 @@ You can use `HealthChecksPath` and `HealthChecksScheme` annotations in HealthChe
 
 ## Accessing the UI service
 
-Once you applied the [HealthCheck](#Sample-HealthCheck-definition) definition, the operator has automatically created some resources to setup your UI service and you can now access the healthchecks dashboard after inspecting it's address:
+Once you applied the HealthCheck definition, the operator has automatically created some resources to setup your UI service and you can now access the healthchecks dashboard after inspecting it's address:
 
 `kubectl get svc -n demo`
 
-NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE
+```text
+NAME                  TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)         AGE
+hc-website-svc        ClusterIP      10.0.145.224 <none>           80/TCP          16h
+healthchecks-ui-svc   LoadBalancer   10.0.20.73   51.138.24.168    80:31343/TCP    16h
+```
 
-hc-website-svc ClusterIP 10.0.145.224 <none> 80/TCP 16h
-
-healthchecks-ui-svc LoadBalancer 10.0.20.73 **51.138.24.168** 80:31343/TCP 16h
-
-Your UI endpoint will be listening in http://51.138.24.168/healthchecks and the labeled service should appear automatically.
+Your UI endpoint will be listening in <http://51.138.24.168/healthchecks> and the labeled service should appear automatically.
 
 ![HealthChecksUIBranding](./images/ui-branding-2.jpg)
 

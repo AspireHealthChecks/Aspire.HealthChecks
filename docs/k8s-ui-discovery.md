@@ -1,3 +1,7 @@
+---
+title: Health Checks UI Automatic Kubernetes Services Discovery
+---
+
 ## Health Checks UI automatic Kubernetes services discovery
 
 HealthChecks UI supports automatic discovery of k8s services exposing pods that have health checks endpoints. This means, you can benefit from it and avoid registering all the endpoints you want to check and let the UI discover them using the k8s api.
@@ -23,7 +27,6 @@ The default mechanism to register the target endpoints to be queried for health 
   }
 }
 ```
-
 
 To enable Kubernetes discovery you just need to configure some settings inside the UI project appsettings.json:
 
@@ -103,7 +106,7 @@ If you have exposed a deployment using for example a LoadBalancer on port 50000 
 
 If Namespaces is set only the labelled services within the specified namespace(s) will be queried. By default it will query all services in the cluster.
 
-**NOTE**: Remember if you are using `kubectl proxy` you can configure your cluster address as http://localhost:8001.
+**NOTE**: Remember if you are using `kubectl proxy` you can configure your cluster address as <http://localhost:8001>.
 
 ## Kubernetes Role-Based Access
 

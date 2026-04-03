@@ -1,4 +1,6 @@
-# Failure notification WebHooks
+---
+title: Failure Notification Webhooks
+---
 
 ![HealthChecksUI](./images/ui-webhooks.png)
 
@@ -173,7 +175,7 @@ public static async Task Run(HttpRequestMessage req, IAsyncCollector<Mail> messa
 
 ## Slack
 
-If you want to send HealthCheck failure notifications to Slack channel the payload to be used follow the rules described [here](https://api.slack.com/incoming-webhooks).
+If you want to send HealthCheck failure notifications to Slack channel the payload to be used follow the rules described in [Slack incoming webhook documentation](https://api.slack.com/incoming-webhooks).
 
 Next **json** is a payload sample for Slack web hook integration:
 

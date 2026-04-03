@@ -1,3 +1,7 @@
+---
+title: Kubernetes Liveness and Readiness Probes Using HealthChecks
+---
+
 ## Kubernetes liveness and readiness probes using HealthChecks
 
 Asp.Net Core HealthChecks becomes really useful to configure our liveness and readiness probes in our kubernetes deployments. In the following lines we will show a sample of how can we do this. This sample is a little tutorial that might be useful for people starting to work with HealthChecks and Kubernetes.

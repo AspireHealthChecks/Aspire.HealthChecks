@@ -273,9 +273,9 @@ app.UseHealthChecksPrometheusExporter("/my-health-metrics", options => options.R
 
 ## HealthCheckUI
 
-![HealthChecksUI](./doc/images/ui-home.png)
+![HealthChecksUI](./docs/images/ui-home.png)
 
-[UI Changelog](./doc/ui-changelog.md)
+[UI Changelog](./docs/ui-changelog.md)
 
 The project HealthChecks.UI is a minimal UI interface that stores and shows the health checks results from the configured HealthChecks URIs.
 
@@ -430,7 +430,7 @@ Or you can use `IConfiguration` providers, like json file or environment variabl
 
 By clicking details button in the healthcheck row, you can preview the health status history timeline:
 
-![Timeline](./doc/images/timeline.png)
+![Timeline](./docs/images/timeline.png)
 
 **Note**: HealthChecks UI saves an execution history entry in the database whenever a HealthCheck status changes from Healthy to Unhealthy and viceversa.
 
@@ -445,7 +445,7 @@ services.AddHealthChecksUI(setup =>
 });
 ```
 
-**HealthChecksUI** is also available as a _docker image_ You can read more about [HealthChecks UI Docker image](./doc/ui-docker.md).
+**HealthChecksUI** is also available as a _docker image_ You can read more about [HealthChecks UI Docker image](./docs/ui-docker.md).
 
 ### Configuration
 
@@ -572,7 +572,7 @@ If the **WebHooks** section is configured, HealthCheck-UI automatically posts a 
 
 Webhooks can be configured with configuration providers and also by code. Using code allows greater customization as you can setup you own user functions to customize output messages or configuring if a payload should be sent to a given webhook endpoint.
 
-The [web hooks section](./doc/webhooks.md) contains more information and webhooks samples for Microsoft Teams, Azure Functions, Slack and more.
+The [web hooks section](./docs/webhooks.md) contains more information and webhooks samples for Microsoft Teams, Azure Functions, Slack and more.
 
 **Avoid Fail notification spam**
 
@@ -589,7 +589,7 @@ services.AddHealthChecksUI(setup =>
 
 ### Sample of dotnet styled UI
 
-![HealthChecksUIBranding](./doc/images/ui-branding.png)
+![HealthChecksUIBranding](./docs/images/ui-branding.png)
 
 Since version 2.2.34, UI supports custom styles and branding by using a **custom style sheet** and **css variables**.
 To add your custom styles sheet, use the UI setup method:
@@ -606,7 +606,7 @@ app
     });
 ```
 
-You can visit the section [custom styles and branding](./doc/styles-branding.md) to find source samples and get further information about custom css properties.
+You can visit the section [custom styles and branding](./docs/styles-branding.md) to find source samples and get further information about custom css properties.
 
 ## UI Configure HttpClient and HttpMessageHandler for Api and Webhooks endpoints
 
@@ -650,15 +650,15 @@ services.AddHealthChecksUI(setupSettings: setup =>
 
 If you are running your workloads in kubernetes, you can benefit from it and have your healthchecks environment ready and monitoring in seconds.
 
-You can get for information in our [HealthChecks Operator docs](./doc/k8s-operator.md)
+You can get for information in our [HealthChecks Operator docs](./docs/k8s-operator.md)
 
 ## UI Kubernetes automatic services discovery
 
-<!-- ![k8s-discovery](./doc/images/k8s-discovery-service.png) -->
+<!-- ![k8s-discovery](./docs/images/k8s-discovery-service.png) -->
 
 HealthChecks UI supports automatic discovery of k8s services exposing pods that have health checks endpoints. This means, you can benefit from it and avoid registering all the endpoints you want to check and let the UI discover them using the k8s api.
 
-You can get more information [here](./doc/k8s-ui-discovery.md)
+You can get more information [here](./docs/k8s-ui-discovery.md)
 
 ## HealthChecks as Release Gates for Azure DevOps Pipelines
 
@@ -676,7 +676,7 @@ Check this [README](./extensions/README.md) on how to configure it.
 
 ## Tutorials, demos and walkthroughs on ASP.NET Core HealthChecks
 
-- [ASP.NET Core HealthChecks and Kubernetes Liveness / Readiness by Carlos Landeras](./doc/kubernetes-liveness.md)
+- [ASP.NET Core HealthChecks and Kubernetes Liveness / Readiness by Carlos Landeras](./docs/kubernetes-liveness.md)
 - [ASP.NET Core HealthChecks, BeatPulse UI, Webhooks and Kubernetes Liveness / Readiness probes demos at SDN.nl live WebCast by Carlos Landeras](https://www.youtube.com/watch?v=kzRKGCmGbqo)
 - [ASP.NET Core HealthChecks features video by @condrong](https://t.co/YriQ6cLWVm)
 - [How to set up ASP.NET Core 2.2 Health Checks with BeatPulse's AspNetCore.Diagnostics.HealthChecks by Scott Hanselman](https://www.hanselman.com/blog/HowToSetUpASPNETCore22HealthChecksWithBeatPulsesAspNetCoreDiagnosticsHealthChecks.aspx)

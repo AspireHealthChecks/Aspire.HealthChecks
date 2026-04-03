@@ -14,7 +14,7 @@ code style:
 
 docs:
   - changed-files:
-    - any-glob-to-any-file: [README.md, doc/**/*]
+    - any-glob-to-any-file: [README.md, docs/**/*]
 
 samples:
   - changed-files:

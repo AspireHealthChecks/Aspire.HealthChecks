@@ -1,16 +1,18 @@
-# HealthChecks UI Docker Image
+---
+title: HealthChecks UI Docker Image
+---
 
 ## HealthChecks UI
 
 ### Sections
 
-- [Custom Branding](#Custom-Branding)
-- [Configure UI Paths](<#Configure-UI-paths-(UI-path,-Api-path-and-resources-path)>)
-- [Storage Providers Configuration](#Storage-Providers-Configuration)
-- [Azure App Configuration Service](#Azure-App-Configuration-Service)
-- [Environment variables table](#Environment-variables-table)
-- [Samples](#Samples)
-- [Docker Compose Sample](#Sample-Docker-Compose)
+- [Custom Branding](#custom-branding)
+- [Configure UI Paths](#configure-ui-paths-ui-path-api-path-and-resources-path)
+- [Storage Providers Configuration](#storage-providers-configuration)
+- [Azure App Configuration Service](#azure-app-configuration-service)
+- [Environment variables table](#environment-variables-table)
+- [Samples](#samples)
+- [Docker Compose Sample](#sample-docker-compose)
 
 _HealthChecks_ is available as a docker image on [DockerHub](https://hub.docker.com/r/xabarilcoding/healthchecksui/). This image is a simple ASP.NET Core project with the _HealthCheckUI_ middleware.
 
@@ -51,7 +53,7 @@ docker run -e ui_path=/healthchecks-e ui_resources_path=/static -e ui_api_path=/
 
 ## Storage Providers Configuration
 
-Since version 3.1.1 we do support different configuration providers. There are two environment variables related with this feature: [storage_provider and storage_connection](#Environment-variables-table)
+Since version 3.1.1 we do support different configuration providers. There are two environment variables related with this feature: [storage_provider and storage_connection](#environment-variables-table)
 
 ## Azure App Configuration Service
 
@@ -78,7 +80,7 @@ The existing environment variables are explained below:
 | ui_no_relative_paths        | Disables relative paths for UI frontend resources                                                       | false                                          |
 | AAC_Enabled                 | Enables AAC config provider                                                                             | Not set by default                             |
 | AAC_ConnectionString        | Connection string to configuration service                                                              | If set, Managed Service Identity won't be used |
-| AAC_ManagedIdentityEndpoint | Your AAC endpoint to connect using Managed Identity                                                     | Sample: https://your-endpoint.azconfig.io      |
+| AAC_ManagedIdentityEndpoint | Your AAC endpoint to connect using Managed Identity                                                     | Sample: <https://your-endpoint.azconfig.io>    |
 | AAC_Label                   | Filter configuration keys containing this label                                                         | Sample: HealthChecksConfig                     |
 | AAC_CacheExpiration         | Cache expiration time before a refresh operation is triggered                                           | Sample: 60, default: 30                        |
 

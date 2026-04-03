@@ -1,3 +1,7 @@
+---
+title: HealthChecks UI Interface Styling and Branding
+---
+
 ## Health Checks UI Interface styling and branding
 
 Since version 2.2.34 the UI interface has a new feature to add custom stylesheets that will be served by the UI middleware, allowing to customize most interface sections:
@@ -5,7 +9,6 @@ Since version 2.2.34 the UI interface has a new feature to add custom stylesheet
 ![HealthChecksUIBranding](./images/ui-branding.png)
 
 To customize your styles and branding just register your custom stylesheets in UseHealthChecksUI setup action:
-
 
 ```csharp
  app
@@ -22,7 +25,7 @@ To customize your styles and branding just register your custom stylesheets in U
 
 We introduced custom properties to change grey scale and main color paillete. Another benefit is the use of BEM like naming convention for css classes.
 
-```
+```css
 Color paillete
 
 --primaryColor: #5ec297;
@@ -37,7 +40,6 @@ Color paillete
 --successColor: #3aaa97;
 
 Styles configuration
-
 
 --bgMain: var(--lightColor);
 --bgSecondary: #ffffff;
@@ -64,7 +66,6 @@ rgba(255, 255, 255, 0.8)
 
 ```
 
-## Source Sample:
-
+## Source Sample
 
 [You can check here the dotnet custom branding sample](https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/tree/master/samples/HealthChecks.UI.Branding)
