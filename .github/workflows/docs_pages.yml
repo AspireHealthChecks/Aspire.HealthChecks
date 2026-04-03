@@ -49,7 +49,6 @@ jobs:
           exit 1
 
       - name: Deploy to dotnetdiag.github.io with personal access token
-        if: ${{ secrets.PAGES_DEPLOY_TOKEN != '' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
