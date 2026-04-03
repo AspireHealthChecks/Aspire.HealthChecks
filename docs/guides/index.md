@@ -7,16 +7,16 @@ This section reorganizes the original repository articles under a single landing
 
 ## HealthChecks UI
 
-- [UI Docker image]({{ '/ui-docker.html' | relative_url }})
-- [Webhooks and failure notifications]({{ '/webhooks.html' | relative_url }})
-- [Interface styling and branding]({{ '/styles-branding.html' | relative_url }})
-- [UI changelog]({{ '/ui-changelog.html' | relative_url }})
+- [UI Docker image]({{ '/ui-docker/' | relative_url }})
+- [Webhooks and failure notifications]({{ '/webhooks/' | relative_url }})
+- [Interface styling and branding]({{ '/styles-branding/' | relative_url }})
+- [UI changelog]({{ '/ui-changelog/' | relative_url }})
 
 ## Kubernetes
 
-- [Kubernetes operator]({{ '/k8s-operator.html' | relative_url }})
-- [Automatic Kubernetes service discovery]({{ '/k8s-ui-discovery.html' | relative_url }})
-- [Liveness and readiness probes]({{ '/kubernetes-liveness.html' | relative_url }})
+- [Kubernetes operator]({{ '/k8s-operator/' | relative_url }})
+- [Automatic Kubernetes service discovery]({{ '/k8s-ui-discovery/' | relative_url }})
+- [Liveness and readiness probes]({{ '/kubernetes-liveness/' | relative_url }})
 
 ## Recommended reading order
 

@@ -41,3 +41,23 @@ sections:
         description: "Track documentation updates and the historical UI changelog from one entry point."
         url: /news/
 ---
+
+Aspire HealthChecks brings together a broad package catalog, the HealthChecks UI dashboard, and Kubernetes-focused tooling in one repository.
+
+## Start here
+
+- [Documentation]({{ '/guides/' | relative_url }}) for Docker, UI, webhook, and Kubernetes guides.
+- [Reference Manual]({{ '/reference/' | relative_url }}) for copy-paste examples and operational notes.
+- [News]({{ '/news/' | relative_url }}) for documentation updates and the UI changelog.
+
+## Quick install
+
+```bash
+dotnet add package Aspire.HealthChecks.SqlServer
+```
+
+## Coverage
+
+- 50+ health check packages for infrastructure and platform dependencies.
+- HealthChecks UI guidance for dashboard deployment, branding, and notifications.
+- Kubernetes articles for probes, operator deployment, and service discovery.

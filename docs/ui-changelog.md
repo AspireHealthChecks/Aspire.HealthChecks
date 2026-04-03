@@ -34,7 +34,7 @@ title: HealthChecks UI Changelog
 
 - [Breaking Change] The UI no longer uses sqlite internally. A storage provider must be configured using HealthChecksUIBuilder storage package extensions.
 - Added new storage providers (SqlServer, InMemory, Sqlite, MySql and PostreSQL)
-- Added new storage providers [configuration environment variables for docker image]({{ '/ui-docker.html' | relative_url }})
+- Added new storage providers [configuration environment variables for docker image]({{ '/ui-docker/' | relative_url }})
 - UI now reacts to services updates (health checks path / scheme) and removals from k8s operator
 - Bugfix - The UI now refreshes correctly when the k8s operator removes last endpoint
 - UI preview5 now allows updating stored configurations in startup #516

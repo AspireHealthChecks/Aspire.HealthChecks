@@ -14,7 +14,7 @@ This section groups the current documentation refresh and the historical UI chan
 
 ## Changelog
 
-- [HealthChecks UI changelog]({{ '/ui-changelog.html' | relative_url }})
+- [HealthChecks UI changelog]({{ '/ui-changelog/' | relative_url }})
 
 ## Related pages
 

@@ -67,12 +67,12 @@ app.MapHealthChecksUI(options =>
 });
 ```
 
-If you need container-specific settings, continue with the [UI Docker image guide]({{ '/ui-docker.html' | relative_url }}). If you need alerting payload examples, use the [webhooks guide]({{ '/webhooks.html' | relative_url }}).
+If you need container-specific settings, continue with the [UI Docker image guide]({{ '/ui-docker/' | relative_url }}). If you need alerting payload examples, use the [webhooks guide]({{ '/webhooks/' | relative_url }}).
 
 ## Operational notes
 
 - Keep health checks fast and deterministic. Expensive checks can turn a monitoring endpoint into a source of instability.
 - Tune `failureStatus`, tags, and polling cadence for each dependency instead of applying the same defaults everywhere.
 - Prefer readiness checks for external dependencies and reserve liveness checks for process-level validation.
-- When deploying in Kubernetes, combine this page with the [probe guide]({{ '/kubernetes-liveness.html' | relative_url }}) and the [operator guide]({{ '/k8s-operator.html' | relative_url }}).
+- When deploying in Kubernetes, combine this page with the [probe guide]({{ '/kubernetes-liveness/' | relative_url }}) and the [operator guide]({{ '/k8s-operator/' | relative_url }}).
 - The package naming in this repository follows the `Aspire.<project name>` convention shown in the root README.
