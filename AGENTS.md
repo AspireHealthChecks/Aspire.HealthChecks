@@ -1,0 +1,30 @@
+# AI Working Rules
+
+All AI agents working in this repository must treat formatting as a blocking CI requirement.
+
+## Hard Requirement
+
+- Do not consider a .NET change finished until the relevant `dotnet format --verify-no-changes --severity warn` command passes.
+- Do not leave known formatting or analyzer issues behind.
+- Do not bypass failures by weakening `.editorconfig`, changing warning settings, or adding suppressions unless the user explicitly asks for that.
+
+## What CI Enforces
+
+- Shared package workflows run `dotnet format --no-restore --verify-no-changes --severity warn` against the source project and its paired test project.
+- UI workflows run the same format check across the full UI project set.
+- The repository uses `.editorconfig`, Roslynator analyzers, and `TreatWarningsAsErrors=true`, so style warnings frequently become CI failures.
+
+## Required Validation
+
+- If you changed one source project and one test project, run the same format commands CI uses for those projects.
+- If you changed shared files like `test/_SHARED/**`, `build/docker-images/HealthChecks.UI.Image/**`, `Directory.Build.props`, `Directory.Build.targets`, or `Directory.Packages.props`, run a broader validation such as:
+
+```powershell
+dotnet format AspNetCore.Diagnostics.HealthChecks.sln --verify-no-changes --severity warn
+```
+
+- When practical, also run representative `dotnet build` or `dotnet test` commands for the affected projects after formatting is clean.
+
+## Completion Rule
+
+Before finishing any task that edits C# or MSBuild files, report which `dotnet format`, build, or test commands were run and whether they passed.
