@@ -10,4 +10,4 @@ jobs:
     with:
       BUILD_CONFIG: Release
       PROJECT_PATH: ./src/HealthChecks.RavenDB/HealthChecks.RavenDB.csproj
-      PACKAGE_NAME: NetDiag.HealthChecks.RavenDB
+      PACKAGE_NAME: DotNetDiag.HealthChecks.RavenDB

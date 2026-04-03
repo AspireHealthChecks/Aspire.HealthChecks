@@ -10,4 +10,4 @@ jobs:
     with:
       BUILD_CONFIG: Release
       PROJECT_PATH: ./src/HealthChecks.ArangoDb/HealthChecks.ArangoDb.csproj
-      PACKAGE_NAME: NetDiag.HealthChecks.ArangoDb
+      PACKAGE_NAME: DotNetDiag.HealthChecks.ArangoDb

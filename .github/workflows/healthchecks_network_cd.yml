@@ -10,4 +10,4 @@ jobs:
     with:
       BUILD_CONFIG: Release
       PROJECT_PATH: ./src/HealthChecks.Network/HealthChecks.Network.csproj
-      PACKAGE_NAME: NetDiag.HealthChecks.Network
+      PACKAGE_NAME: DotNetDiag.HealthChecks.Network

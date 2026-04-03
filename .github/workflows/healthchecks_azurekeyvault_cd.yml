@@ -10,4 +10,4 @@ jobs:
     with:
       BUILD_CONFIG: Release
       PROJECT_PATH: ./src/HealthChecks.AzureKeyVault/HealthChecks.AzureKeyVault.csproj
-      PACKAGE_NAME: NetDiag.HealthChecks.AzureKeyVault
+      PACKAGE_NAME: DotNetDiag.HealthChecks.AzureKeyVault
