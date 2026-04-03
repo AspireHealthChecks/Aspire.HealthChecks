@@ -2,8 +2,8 @@ title: Aspire HealthChecks
 description: Documentation, reference material, and changelog for AspNetCore.Diagnostics.HealthChecks.
 lang: en
 timezone: UTC
-url: https://xabaril.github.io
-baseurl: /AspNetCore.Diagnostics.HealthChecks
+url: https://dotnetdiag.github.io
+baseurl: ""
 markdown: kramdown
 show_excerpts: false
 
@@ -11,9 +11,9 @@ remote_theme: JekyllNet/jekyll-theme-lumen
 plugins:
   - jekyll-remote-theme
 
-source_url: https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
-source_readme_url: https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/blob/master/README.md
-source_sample_url: https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/tree/master/samples
+source_url: https://github.com/DotNetDiag/HealthChecks
+source_readme_url: https://github.com/DotNetDiag/HealthChecks/blob/master/README.md
+source_sample_url: https://github.com/DotNetDiag/HealthChecks/tree/master/samples
 
 locales:
   - code: en
@@ -31,7 +31,7 @@ defaults:
       ui_blog_url: /reference/
       ui_about_url: /about/
       ui_getting_started_url: /reference/
-      ui_github_pages_url: https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
+      ui_github_pages_url: https://github.com/DotNetDiag/HealthChecks
       ui_brand_subtitle: Project documentation
       ui_docs_label: Documentation
       ui_news_label: News
