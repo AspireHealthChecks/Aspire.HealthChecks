@@ -10,15 +10,20 @@ on:
   push:
     branches: [ master ]
     paths:
-      - src/HealthChecks.UI/**
-      - src/HealthChecks.UI.*/**
-      - test/HealthChecks.UI.*/**
+      - src/HealthChecks.UI*/**
+      - test/HealthChecks.UI*/**
       - test/_SHARED/**
       - samples/HealthChecks.UI*/**
       - .github/workflows/healthchecks_ui_ci.yml
+      - .github/workflows/reusable_ui_cd_workflow.yml
+      - .github/scripts/get-release-scope.ps1
       - Directory.Build.props
       - Directory.Build.targets
       - Directory.Packages.props
+      - build/versions.props
+      - src/Directory.Build.props
+      - src/ApiMarker.cs
+      - src/CallerArgumentExpressionAttribute.cs
       - build/docker-images/HealthChecks.UI.Image/**
     tags:
       - v*
@@ -26,15 +31,20 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-      - src/HealthChecks.UI/**
-      - src/HealthChecks.UI.*/**
-      - test/HealthChecks.UI.*/**
+      - src/HealthChecks.UI*/**
+      - test/HealthChecks.UI*/**
       - test/_SHARED/**
       - samples/HealthChecks.UI*/**
       - .github/workflows/healthchecks_ui_ci.yml
+      - .github/workflows/reusable_ui_cd_workflow.yml
+      - .github/scripts/get-release-scope.ps1
       - Directory.Build.props
       - Directory.Build.targets
       - Directory.Packages.props
+      - build/versions.props
+      - src/Directory.Build.props
+      - src/ApiMarker.cs
+      - src/CallerArgumentExpressionAttribute.cs
       - build/docker-images/HealthChecks.UI.Image/**
 
 jobs:
@@ -55,19 +65,25 @@ jobs:
         id: scope
         shell: pwsh
         run: |
+          $uiProjectPaths = Get-ChildItem -Path './src' -Directory |
+            Where-Object { $_.Name -like 'HealthChecks.UI*' } |
+            ForEach-Object { Get-ChildItem -Path $_.FullName -Filter '*.csproj' -File } |
+            ForEach-Object { ('./src/{0}/{1}' -f $_.Directory.Name, $_.Name).Replace('\', '/') } |
+            Sort-Object -Unique
+
+          $projectPath = $uiProjectPaths |
+            Where-Object { $_ -eq './src/HealthChecks.UI/HealthChecks.UI.csproj' } |
+            Select-Object -First 1
+
+          if (-not $projectPath) {
+            throw 'Unable to locate ./src/HealthChecks.UI/HealthChecks.UI.csproj.'
+          }
+
+          $additionalProjectPaths = @($uiProjectPaths | Where-Object { $_ -ne $projectPath })
+
           ./.github/scripts/get-release-scope.ps1 `
-            -ProjectPath './src/HealthChecks.UI/HealthChecks.UI.csproj' `
-            -AdditionalProjectPaths @(
-              './src/HealthChecks.UI.Client/HealthChecks.UI.Client.csproj',
-              './src/HealthChecks.UI.Core/HealthChecks.UI.Core.csproj',
-              './src/HealthChecks.UI.Data/HealthChecks.UI.Data.csproj',
-              './src/HealthChecks.UI.InMemory.Storage/HealthChecks.UI.InMemory.Storage.csproj',
-              './src/HealthChecks.UI.MySql.Storage/HealthChecks.UI.MySql.Storage.csproj',
-              './src/HealthChecks.UI.PostgreSQL.Storage/HealthChecks.UI.PostgreSQL.Storage.csproj',
-              './src/HealthChecks.UI.SQLite.Storage/HealthChecks.UI.SQLite.Storage.csproj',
-              './src/HealthChecks.UI.SqlServer.Storage/HealthChecks.UI.SqlServer.Storage.csproj',
-              './src/HealthChecks.UI.K8s.Operator/HealthChecks.UI.K8s.Operator.csproj'
-            )
+            -ProjectPath $projectPath `
+            -AdditionalProjectPaths $additionalProjectPaths
       - name: Summarize tag release scope
         if: ${{ steps.scope.outputs.is_tag == 'true' }}
         shell: bash
