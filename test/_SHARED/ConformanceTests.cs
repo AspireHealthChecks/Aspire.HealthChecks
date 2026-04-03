@@ -1,4 +1,7 @@
 using System.Net;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 
 public abstract class ConformanceTests<TClient, THealthCheck, THealthCheckOptions>
     where TClient : class
@@ -52,37 +55,41 @@ public abstract class ConformanceTests<TClient, THealthCheck, THealthCheckOption
     [InlineData(HealthStatus.Degraded, false)]
     public async Task ReturnsProvidedFailureStatusWhenConnectionCanNotBeMade(HealthStatus failureStatus, bool useDiExtension)
     {
-        var webHostBuilder = new WebHostBuilder()
-            .ConfigureServices(services =>
+        using IHost host = await new HostBuilder()
+            .ConfigureWebHost(webHostBuilder =>
             {
-                if (useDiExtension)
-                {
-                    services.AddSingleton(sp => CreateClientForNonExistingEndpoint());
-                    AddHealthCheck(builder: services.AddHealthChecks(), failureStatus: failureStatus);
-                }
-                else
-                {
-                    TClient client = CreateClientForNonExistingEndpoint();
+                webHostBuilder
+                    .UseTestServer()
+                    .ConfigureServices(services =>
+                    {
+                        if (useDiExtension)
+                        {
+                            services.AddSingleton(sp => CreateClientForNonExistingEndpoint());
+                            AddHealthCheck(builder: services.AddHealthChecks(), failureStatus: failureStatus);
+                        }
+                        else
+                        {
+                            TClient client = CreateClientForNonExistingEndpoint();
 
-                    services.AddHealthChecks()
-                        .Add(new HealthCheckRegistration(
-                            name: "name",
-                            instance: CreateHealthCheck(client, null),
-                            failureStatus: failureStatus,
-                            tags: null));
-                }
+                            services.AddHealthChecks()
+                                .Add(new HealthCheckRegistration(
+                                    name: "name",
+                                    instance: CreateHealthCheck(client, null),
+                                    failureStatus: failureStatus,
+                                    tags: null));
+                        }
+                    })
+                    .Configure(app =>
+                    {
+                        app.UseHealthChecks("/health", new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                        });
+                    });
             })
-            .Configure(app =>
-            {
-                app.UseHealthChecks("/health", new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                });
-            });
+            .StartAsync();
 
-        using TestServer server = new(webHostBuilder);
-
-        using var response = await server.CreateRequest("/health").GetAsync();
+        using var response = await host.GetTestClient().GetAsync("/health");
 
         response.StatusCode.ShouldBe(failureStatus == HealthStatus.Unhealthy ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.OK);
     }
