@@ -16,6 +16,10 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+env:
+  DOCS_EXTERNAL_REPOSITORY: dotnetdiag/dotnetdiag.github.io
+  DOCS_PUBLISH_BRANCH: gh-pages
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -32,10 +36,41 @@ jobs:
           destination: ./_site
           verbose: "true"
 
-      - name: Deploy to dotnetdiag.github.io
+      - name: Validate external deployment credentials
+        shell: bash
+        run: |
+          if [ -n "${{ secrets.PAGES_DEPLOY_KEY }}" ]; then
+            echo "Using SSH deploy key for external Pages deployment."
+            exit 0
+          fi
+
+          if [ -n "${{ secrets.PAGES_DEPLOY_TOKEN }}" ]; then
+            echo "Using personal access token for external Pages deployment."
+            exit 0
+          fi
+
+          echo "::error::External Pages deployment requires either PAGES_DEPLOY_KEY or PAGES_DEPLOY_TOKEN."
+          echo "::error::Grant write access on ${DOCS_EXTERNAL_REPOSITORY} to the credential you store in this repository."
+          exit 1
+
+      - name: Deploy to dotnetdiag.github.io with SSH deploy key
+        if: ${{ secrets.PAGES_DEPLOY_KEY != '' }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.PAGES_DEPLOY_KEY }}
+          external_repository: ${{ env.DOCS_EXTERNAL_REPOSITORY }}
+          publish_branch: ${{ env.DOCS_PUBLISH_BRANCH }}
+          publish_dir: ${{ steps.jekyllnet-build.outputs.destination }}
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+
+      - name: Deploy to dotnetdiag.github.io with personal access token
+        if: ${{ secrets.PAGES_DEPLOY_KEY == '' && secrets.PAGES_DEPLOY_TOKEN != '' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
-          external_repository: dotnetdiag/dotnetdiag.github.io
-          publish_branch: main
+          external_repository: ${{ env.DOCS_EXTERNAL_REPOSITORY }}
+          publish_branch: ${{ env.DOCS_PUBLISH_BRANCH }}
           publish_dir: ${{ steps.jekyllnet-build.outputs.destination }}
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
