@@ -10,7 +10,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
     {
         var connectionString = rabbitMQContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -24,9 +24,9 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 {
                     Predicate = r => r.Tags.Contains("rabbitmq")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -38,7 +38,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
     {
         var connectionString = "amqp://invalidhost:6672";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -52,9 +52,9 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 {
                     Predicate = r => r.Tags.Contains("rabbitmq")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -75,7 +75,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
 
         var connection = await factory.CreateConnectionAsync();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -92,9 +92,9 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 {
                     Predicate = r => r.Tags.Contains("rabbitmq")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -115,7 +115,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
 
         var connection = await factory.CreateConnectionAsync();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -129,9 +129,9 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 {
                     Predicate = r => r.Tags.Contains("rabbitmq")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -141,7 +141,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
     [Fact]
     public async Task be_not_crash_on_startup_when_rabbitmq_is_down_at_startup()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -165,9 +165,9 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 {
                     Predicate = r => r.Tags.Contains("rabbitmq")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response1 = await server.CreateRequest("/health").GetAsync();
         response1.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -179,7 +179,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
         var connectionString1 = rabbitMQContainerFixture.GetConnectionString();
         const string connectionString2 = "amqp://invalidhost:6672/";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddKeyedSingleton("1", (sp, _) => new ConnectionFactory() { Uri = new Uri(connectionString1) }.CreateConnectionAsync().GetAwaiter().GetResult());
@@ -199,9 +199,9 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 {
                     Predicate = r => r.Name.Equals("rabbitmq2")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response1 = await server.CreateRequest("/health1").GetAsync();
         using var response2 = await server.CreateRequest("/health2").GetAsync();
@@ -213,7 +213,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
     [Fact]
     public async Task no_connection_registered()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -226,9 +226,9 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 {
                     Predicate = r => r.Tags.Contains("rabbitmq")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response1 = await server.CreateRequest("/health").GetAsync();
         response1.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);

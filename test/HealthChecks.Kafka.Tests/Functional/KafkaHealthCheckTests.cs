@@ -17,7 +17,7 @@ public class kafka_healthcheck_should(KafkaContainerFixture kafkaContainerFixtur
             SocketTimeoutMs = 1500
         };
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -29,9 +29,9 @@ public class kafka_healthcheck_should(KafkaContainerFixture kafkaContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("kafka")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -49,7 +49,7 @@ public class kafka_healthcheck_should(KafkaContainerFixture kafkaContainerFixtur
             MessageSendMaxRetries = 0
         };
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -61,9 +61,9 @@ public class kafka_healthcheck_should(KafkaContainerFixture kafkaContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("kafka")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

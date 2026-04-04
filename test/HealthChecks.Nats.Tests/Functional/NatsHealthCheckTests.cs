@@ -10,7 +10,7 @@ public class nats_healthcheck_should
     [Fact]
     public async Task be_healthy_when_nats_is_available_using_client_factory()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 var options = NatsOpts.Default with
@@ -30,9 +30,9 @@ public class nats_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("nats")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -42,7 +42,7 @@ public class nats_healthcheck_should
     [Fact]
     public async Task be_healthy_when_nats_is_available_using_singleton()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 var options = NatsOpts.Default with
@@ -61,9 +61,9 @@ public class nats_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("nats")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -73,7 +73,7 @@ public class nats_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_nats_is_unavailable()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -94,9 +94,9 @@ public class nats_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("nats")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

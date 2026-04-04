@@ -9,7 +9,7 @@ public class surrealdb_healthcheck_should(SurrealDbContainerFixture surrealDbFix
     {
         string connectionString = surrealDbFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -24,9 +24,9 @@ public class surrealdb_healthcheck_should(SurrealDbContainerFixture surrealDbFix
                 {
                     Predicate = r => r.Tags.Contains("surrealdb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -38,7 +38,7 @@ public class surrealdb_healthcheck_should(SurrealDbContainerFixture surrealDbFix
     {
         const string connectionString = "Server=http://localhost:1234;Username=root;Password=root";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -53,9 +53,9 @@ public class surrealdb_healthcheck_should(SurrealDbContainerFixture surrealDbFix
                 {
                     Predicate = r => r.Tags.Contains("surrealdb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

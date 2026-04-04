@@ -7,7 +7,7 @@ public class ping_healthcheck_should
     [Fact]
     public async Task be_healthy_when_all_hosts_reply_to_ping()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -19,9 +19,9 @@ public class ping_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("ping")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -30,7 +30,7 @@ public class ping_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_a_host_ping_is_not_successful()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -46,9 +46,9 @@ public class ping_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("ping")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);

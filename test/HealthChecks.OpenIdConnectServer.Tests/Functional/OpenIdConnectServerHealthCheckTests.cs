@@ -7,7 +7,7 @@ public class oidc_server_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_oidc_server_is_unavailable()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -20,9 +20,9 @@ public class oidc_server_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("oidcserver")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -32,7 +32,7 @@ public class oidc_server_healthcheck_should
     [Fact]
     public async Task be_healthy_if_oidc_server_is_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -45,9 +45,9 @@ public class oidc_server_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("oidcserver")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

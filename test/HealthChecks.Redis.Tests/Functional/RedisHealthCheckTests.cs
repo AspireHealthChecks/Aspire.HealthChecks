@@ -12,7 +12,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
     {
         var connectionString = $"{redisContainerFixture.GetConnectionString()},allowAdmin=true";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
          .ConfigureServices(services =>
          {
              services.AddHealthChecks()
@@ -24,9 +24,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
              {
                  Predicate = r => r.Tags.Contains("redis")
              });
-         });
+         }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -38,7 +38,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
     {
         var connectionString = $"{redisContainerFixture.GetConnectionString()},allowAdmin=true";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -51,9 +51,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("redis")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -68,7 +68,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
         var connectionMultiplexer = await ConnectionMultiplexer
             .ConnectAsync(connectionString);
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
          .ConfigureServices(services =>
          {
              services.AddHealthChecks()
@@ -80,9 +80,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
              {
                  Predicate = r => r.Tags.Contains("redis")
              });
-         });
+         }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -97,7 +97,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
         var connectionMultiplexer = await ConnectionMultiplexer
             .ConnectAsync(connectionString);
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddSingleton<IConnectionMultiplexer>(connectionMultiplexer);
@@ -112,9 +112,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("redis")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -124,7 +124,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
     [Fact]
     public async Task be_unhealthy_when_connection_multiplexer_factory_throws_on_connect()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 // This factory will throw when called for the first time.
@@ -140,9 +140,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
                 {
                     Predicate = _ => true
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -152,7 +152,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
     [Fact]
     public async Task be_unhealthy_if_redis_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
          .ConfigureServices(services =>
          {
              services.AddHealthChecks()
@@ -164,9 +164,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
              {
                  Predicate = r => r.Tags.Contains("redis")
              });
-         });
+         }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -176,7 +176,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
     [Fact]
     public async Task be_unhealthy_if_redis_is_not_available_within_specified_timeout()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -189,9 +189,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
                     Predicate = r => r.Tags.Contains("redis"),
                     ResponseWriter = HealthChecks.UI.Client.UIResponseWriter.WriteHealthCheckUIResponse,
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -202,7 +202,7 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
     [Fact]
     public async Task not_every_IConnectionMultiplexer_is_ConnectionMultiplexer()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddSingleton<IConnectionMultiplexer>(new NotConnectionMultiplexer());
@@ -214,9 +214,9 @@ public class redis_healthcheck_should(RedisContainerFixture redisContainerFixtur
                 {
                     Predicate = _ => true
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

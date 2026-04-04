@@ -7,7 +7,7 @@ public class consul_healthcheck_should
     [Fact]
     public async Task be_healthy_if_consul_is_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
            .ConfigureServices(services =>
            {
                services.AddHealthChecks()
@@ -24,9 +24,9 @@ public class consul_healthcheck_should
                {
                    Predicate = r => r.Tags.Contains("consul")
                });
-           });
+           }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -36,7 +36,7 @@ public class consul_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_consul_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -53,9 +53,9 @@ public class consul_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("consul")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

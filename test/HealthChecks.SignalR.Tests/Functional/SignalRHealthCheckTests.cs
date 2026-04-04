@@ -10,7 +10,7 @@ public class signalr_healthcheck_should
     public async Task be_healthy_if_signalr_hub_is_available()
     {
         TestServer server = null!;
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -33,9 +33,9 @@ public class signalr_healthcheck_should
                     })
                     .UseRouting()
                     .UseEndpoints(config => config.MapHub<TestHub>("/test"));
-            });
+            }));
 
-        server = new TestServer(webHostBuilder);
+        server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -48,7 +48,7 @@ public class signalr_healthcheck_should
     public async Task be_unhealthy_if_signalr_hub_is_unavailable()
     {
         TestServer server = null!;
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -70,9 +70,9 @@ public class signalr_healthcheck_should
                     })
                     .UseRouting()
                     .UseEndpoints(config => config.MapHub<TestHub>("/test"));
-            });
+            }));
 
-        server = new TestServer(webHostBuilder);
+        server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

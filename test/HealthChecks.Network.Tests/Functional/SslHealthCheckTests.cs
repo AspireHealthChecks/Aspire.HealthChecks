@@ -15,7 +15,7 @@ public class ssl_healthcheck_should
     [Fact]
     public async Task be_healthy_if_ssl_is_valid()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -32,9 +32,9 @@ public class ssl_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("ssl")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -44,7 +44,7 @@ public class ssl_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_ssl_is_not_present()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -56,9 +56,9 @@ public class ssl_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("ssl")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -68,7 +68,7 @@ public class ssl_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_ssl_is_not_valid()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -80,9 +80,9 @@ public class ssl_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("ssl")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -92,7 +92,7 @@ public class ssl_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_ssl_is_expired()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -104,9 +104,9 @@ public class ssl_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("ssl")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -116,7 +116,7 @@ public class ssl_healthcheck_should
     [Fact]
     public async Task be_degraded_if_ssl_daysbefore()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -128,9 +128,9 @@ public class ssl_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("ssl")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

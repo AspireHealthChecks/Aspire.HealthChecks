@@ -13,7 +13,7 @@ public class dns_healthcheck_should
         var targetHost2 = "localhost";
         var targetHost2IpAddresses = Dns.GetHostAddresses(targetHost2).Select(h => h.ToString()).ToArray();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -29,9 +29,9 @@ public class dns_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("dns")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -40,7 +40,7 @@ public class dns_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_dns_resolution_does_not_match_configured_hosts()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -52,9 +52,9 @@ public class dns_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("dns")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);

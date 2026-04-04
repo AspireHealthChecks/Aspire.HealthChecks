@@ -16,15 +16,15 @@ public class mysql_storage_should
     {
         var customOptionsInvoked = false;
 
-        var hostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureServices(services =>
             {
                 services.AddHealthChecksUI()
                 .AddMySqlStorage("Host=localhost;User Id=root;Password=Password12!;Database=UI", options => customOptionsInvoked = true);
-            });
+            }));
 
-        var services = hostBuilder.Build().Services;
+        var services = host.Services;
         var context = services.GetRequiredService<HealthChecksDb>();
 
         context.ShouldNotBeNull();
@@ -39,23 +39,23 @@ public class mysql_storage_should
         var hostReset = new ManualResetEventSlim(false);
         var collectorReset = new ManualResetEventSlim(false);
 
-        var webHostBuilder = HostBuilderHelper.Create(
-               hostReset,
-               collectorReset,
-               configureUI: config => config.AddMySqlStorage(ProviderTestHelper.MySqlConnectionString()));
+        using var appHost = HostBuilderHelper.Create(
+            hostReset,
+            collectorReset,
+            configureUI: config => config.AddMySqlStorage(ProviderTestHelper.MySqlConnectionString()));
 
-        using var host = new TestServer(webHostBuilder);
+        using var server = new TestServer(appHost.Services);
 
         hostReset.Wait(ProviderTestHelper.DefaultHostTimeout);
 
-        var context = host.Services.GetRequiredService<HealthChecksDb>();
+        var context = appHost.Services.GetRequiredService<HealthChecksDb>();
         var configurations = await context.Configurations.ToListAsync();
         var host1 = ProviderTestHelper.Endpoints[0];
 
         configurations[0].Name.ShouldBe(host1.Name);
         configurations[0].Uri.ShouldBe(host1.Uri);
 
-        using var client = host.CreateClient();
+        using var client = server.CreateClient();
 
         collectorReset.Wait(ProviderTestHelper.DefaultCollectorTimeout);
 

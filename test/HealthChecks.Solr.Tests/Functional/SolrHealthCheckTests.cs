@@ -8,7 +8,7 @@ public class solr_healthcheck_should
     [Fact]
     public async Task be_healthy_if_solr_is_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
            .ConfigureServices(services =>
            {
                services.AddHealthChecks()
@@ -21,9 +21,9 @@ public class solr_healthcheck_should
                    Predicate = r => r.Tags.Contains("solr"),
                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                });
-           });
+           }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
         response.StatusCode.ShouldBe(HttpStatusCode.OK, await response.Content.ReadAsStringAsync());
     }
@@ -31,7 +31,7 @@ public class solr_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_solr_ping_is_disabled()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -44,9 +44,9 @@ public class solr_healthcheck_should
                     Predicate = r => r.Tags.Contains("solr"),
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable, await response.Content.ReadAsStringAsync());
     }
@@ -54,7 +54,7 @@ public class solr_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_solr_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -67,9 +67,9 @@ public class solr_healthcheck_should
                     Predicate = r => r.Tags.Contains("solr"),
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable, await response.Content.ReadAsStringAsync());
     }

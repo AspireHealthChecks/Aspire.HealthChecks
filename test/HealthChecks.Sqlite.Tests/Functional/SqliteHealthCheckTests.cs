@@ -7,7 +7,7 @@ public class sqlite_healthcheck_should
     [Fact]
     public async Task be_healthy_when_sqlite_is_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -19,9 +19,9 @@ public class sqlite_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sqlite")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -31,7 +31,7 @@ public class sqlite_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_sqlite_is_unavailable()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -43,9 +43,9 @@ public class sqlite_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sqlite")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -55,7 +55,7 @@ public class sqlite_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_sqlquery_is_not_valid()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -67,9 +67,9 @@ public class sqlite_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sqlite")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

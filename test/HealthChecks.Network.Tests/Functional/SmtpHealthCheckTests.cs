@@ -15,7 +15,7 @@ public class smtp_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connecting_using_ssl()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -34,9 +34,9 @@ public class smtp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("smtp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -45,7 +45,7 @@ public class smtp_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connecting_using_tls()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -64,9 +64,9 @@ public class smtp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("smtp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -75,7 +75,7 @@ public class smtp_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connecting_using_connection_type_auto()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -92,9 +92,9 @@ public class smtp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("smtp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -103,7 +103,7 @@ public class smtp_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_connecting_to_an_invalid_smtp_port_with_mode_auto()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -120,9 +120,9 @@ public class smtp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("smtp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -131,7 +131,7 @@ public class smtp_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connection_and_login_with_valid_account_using_ssl_port_and_mode_auto()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -149,9 +149,9 @@ public class smtp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("smtp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -160,7 +160,7 @@ public class smtp_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connection_and_login_with_valid_account_using_tls_port_and_mode_auto()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -178,9 +178,9 @@ public class smtp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("smtp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -190,7 +190,7 @@ public class smtp_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_connection_and_login_with_an_invalid_account()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
              .ConfigureServices(services =>
              {
                  services.AddHealthChecks()
@@ -208,9 +208,9 @@ public class smtp_healthcheck_should
                  {
                      Predicate = r => r.Tags.Contains("smtp")
                  });
-             });
+             }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -224,7 +224,7 @@ public class smtp_healthcheck_should
         most mail server docker images does not support this scenario
         This test is skipped as this service might not be working in the future */
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
              .ConfigureServices(services =>
              {
                  services.AddHealthChecks()
@@ -242,9 +242,9 @@ public class smtp_healthcheck_should
                  {
                      Predicate = r => r.Tags.Contains("smtp")
                  });
-             });
+             }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();

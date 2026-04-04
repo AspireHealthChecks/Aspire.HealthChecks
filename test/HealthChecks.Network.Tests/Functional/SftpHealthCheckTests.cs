@@ -8,7 +8,7 @@ public class sftp_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connection_to_sftp_is_successful_using_password_authentication()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -27,9 +27,9 @@ public class sftp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sftp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -39,7 +39,7 @@ public class sftp_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_connection_to_sftp_is_using_wrong_password()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -58,9 +58,9 @@ public class sftp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sftp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -72,7 +72,7 @@ public class sftp_healthcheck_should
     {
         string privateKey = File.ReadAllText("id_rsa");
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -91,9 +91,9 @@ public class sftp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sftp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -105,7 +105,7 @@ public class sftp_healthcheck_should
     {
         string privateKey = File.ReadAllText("id_rsa");
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -125,9 +125,9 @@ public class sftp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sftp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -139,7 +139,7 @@ public class sftp_healthcheck_should
     {
         string privateKey = File.ReadAllText("id_rsa");
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -159,9 +159,9 @@ public class sftp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sftp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -171,7 +171,7 @@ public class sftp_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_using_wrong_port()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -190,9 +190,9 @@ public class sftp_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("sftp")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

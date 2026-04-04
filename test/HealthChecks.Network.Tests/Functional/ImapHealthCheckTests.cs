@@ -14,7 +14,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connecting_to_imap_ssl_port_without_login()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -31,9 +31,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -42,7 +42,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connecting_to_imap_ssl_and_login_with_correct_account()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -60,9 +60,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -71,7 +71,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_connecting_to_imap_ssl_and_login_with_an_incorrect_account()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -90,9 +90,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -101,7 +101,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_healthy_when_connecting_to_imap_ssl_with_a_correct_account_checking_an_existing_folder()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -120,9 +120,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -131,7 +131,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_connecting_to_imap_ssl_with_a_correct_account_checking_an_non_existing_folder()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -150,9 +150,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -161,7 +161,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_healthy_when_imap_connects_to_starttls_port()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -178,9 +178,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -189,7 +189,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_healthy_when_imap_performs_login_using_starttls_handshake()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -207,9 +207,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -218,7 +218,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_healthy_when_imap_performs_login_and_folder_check_using_starttls_handshake()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -238,9 +238,9 @@ public class imap_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("imap")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -249,7 +249,7 @@ public class imap_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_using_configuration_auto_with_an_invalid_imap_port()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -268,9 +268,9 @@ public class imap_healthcheck_should
                 options.ResultStatusCodes[HealthStatus.Unhealthy] = (int)HttpStatusCode.ServiceUnavailable;
 
                 app.UseHealthChecks("/health", options);
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);

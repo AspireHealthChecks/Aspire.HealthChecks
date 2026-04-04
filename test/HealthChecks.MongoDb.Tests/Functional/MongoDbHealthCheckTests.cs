@@ -10,7 +10,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     {
         var connectionString = mongoDbContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -24,9 +24,9 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
                 {
                     Predicate = r => r.Tags.Contains("mongodb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -38,7 +38,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     {
         var connectionString = mongoDbContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -52,9 +52,9 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
                 {
                     Predicate = r => r.Tags.Contains("mongodb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -66,7 +66,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     {
         var connectionString = $"{mongoDbContainerFixture.GetConnectionString()}local";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -80,9 +80,9 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
                 {
                     Predicate = r => r.Tags.Contains("mongodb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -94,7 +94,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     {
         var connectionString = mongoDbContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -108,9 +108,9 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
                 {
                     Predicate = r => r.Tags.Contains("mongodb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -123,7 +123,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
         // NOTE: with mongodb the database is created automatically the first time something is written to it
         var connectionString = $"{mongoDbContainerFixture.GetConnectionString()}nonexisting";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -137,9 +137,9 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
                 {
                     Predicate = r => r.Tags.Contains("mongodb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -149,7 +149,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     [Fact]
     public async Task be_unhealthy_listing_all_databases_if_mongodb_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -163,9 +163,9 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
                 {
                     Predicate = r => r.Tags.Contains("mongodb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -177,7 +177,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     [InlineData("nonexistingdatabase")]
     public async Task be_unhealthy_on_specified_database_if_mongodb_is_not_available(string mongoDatabaseName)
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -191,9 +191,9 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
                 {
                     Predicate = r => r.Tags.Contains("mongodb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

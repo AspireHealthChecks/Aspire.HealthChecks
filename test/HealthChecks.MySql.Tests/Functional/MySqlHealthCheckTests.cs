@@ -10,7 +10,7 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
     {
         var connectionString = mySqlContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -23,9 +23,9 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("mysql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -37,7 +37,7 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
     {
         var connectionString = mySqlContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -49,9 +49,9 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("mysql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -63,7 +63,7 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
     {
         var connectionString = "server=255.255.255.255;port=3306;database=information_schema;uid=root;password=Password12!";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -75,9 +75,9 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("mysql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -89,7 +89,7 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
     {
         var connectionString = "server=255.255.255.255;port=3306;database=information_schema;uid=root;password=Password12!";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 var mysqlOptions = new MySqlHealthCheckOptions(connectionString);
@@ -102,9 +102,9 @@ public class mysql_healthcheck_should(MySqlContainerFixture mySqlContainerFixtur
                 {
                     Predicate = r => r.Tags.Contains("mysql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

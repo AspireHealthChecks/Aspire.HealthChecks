@@ -35,11 +35,10 @@ public sealed class QdrantContainerFixture : IAsyncLifetime
 
     public static async Task<IContainer> CreateContainerAsync()
     {
-        var container = new ContainerBuilder()
-              .WithImage($"{Registry}/{Image}:{Tag}")
-              .WithPortBinding(GrpcPort, true)
-              .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(GrpcPort))
-              .Build();
+        var container = new ContainerBuilder($"{Registry}/{Image}:{Tag}")
+            .WithPortBinding(GrpcPort, true)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilExternalTcpPortIsAvailable(GrpcPort, _ => { }))
+            .Build();
         await container.StartAsync();
 
         return container;

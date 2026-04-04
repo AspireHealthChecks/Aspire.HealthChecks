@@ -9,7 +9,7 @@ public class sqlserver_healthcheck_should(SqlServerContainerFixture sqlServerCon
     {
         var connectionString = sqlServerContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -21,9 +21,9 @@ public class sqlserver_healthcheck_should(SqlServerContainerFixture sqlServerCon
                 {
                     Predicate = r => r.Tags.Contains("sqlserver")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -33,7 +33,7 @@ public class sqlserver_healthcheck_should(SqlServerContainerFixture sqlServerCon
     [Fact]
     public async Task be_unhealthy_if_sqlServer_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -45,9 +45,9 @@ public class sqlserver_healthcheck_should(SqlServerContainerFixture sqlServerCon
                 {
                     Predicate = r => r.Tags.Contains("sqlserver")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -59,7 +59,7 @@ public class sqlserver_healthcheck_should(SqlServerContainerFixture sqlServerCon
     {
         var connectionString = sqlServerContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -71,9 +71,9 @@ public class sqlserver_healthcheck_should(SqlServerContainerFixture sqlServerCon
                 {
                     Predicate = r => r.Tags.Contains("sqlserver")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

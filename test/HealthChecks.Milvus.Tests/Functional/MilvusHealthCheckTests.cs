@@ -10,7 +10,7 @@ public class milvus_healthcheck_should(MilvusContainerFixture milvusContainerFix
     {
         string connectionString = milvusContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -24,9 +24,9 @@ public class milvus_healthcheck_should(MilvusContainerFixture milvusContainerFix
                 {
                     Predicate = r => r.Tags.Contains("milvus")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -38,7 +38,7 @@ public class milvus_healthcheck_should(MilvusContainerFixture milvusContainerFix
     {
         string connectionString = milvusContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -52,9 +52,9 @@ public class milvus_healthcheck_should(MilvusContainerFixture milvusContainerFix
                 {
                     Predicate = r => r.Tags.Contains("milvus")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -64,7 +64,7 @@ public class milvus_healthcheck_should(MilvusContainerFixture milvusContainerFix
     [Fact]
     public async Task be_unhealthy_when_milvus_is_unavailable()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -78,9 +78,9 @@ public class milvus_healthcheck_should(MilvusContainerFixture milvusContainerFix
                 {
                     Predicate = r => r.Tags.Contains("milvus")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

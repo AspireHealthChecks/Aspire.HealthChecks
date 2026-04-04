@@ -11,7 +11,7 @@ public class windows_service__healthcheck_should
     [SkipOnPlatform(Platform.LINUX, Platform.OSX)]
     public async Task be_healthy_when_the_service_is_running()
     {
-        var webhostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -23,9 +23,9 @@ public class windows_service__healthcheck_should
                 {
                     Predicate = _ => true
                 });
-            });
+            }));
 
-        using var server = new TestServer(webhostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync().ConfigureAwait(false);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
@@ -33,7 +33,7 @@ public class windows_service__healthcheck_should
     [SkipOnPlatform(Platform.LINUX, Platform.OSX)]
     public async Task be_unhealthy_when_the_service_does_not_exist()
     {
-        var webhostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -45,9 +45,9 @@ public class windows_service__healthcheck_should
                 {
                     Predicate = _ => true
                 });
-            });
+            }));
 
-        using var server = new TestServer(webhostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync().ConfigureAwait(false);
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
     }
@@ -55,7 +55,7 @@ public class windows_service__healthcheck_should
     [SkipOnPlatform(Platform.WINDOWS)]
     public void throw_exception_when_registering_it_in_a_no_windows_system()
     {
-        var webhostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -67,11 +67,11 @@ public class windows_service__healthcheck_should
                 {
                     Predicate = _ => true
                 });
-            });
+            }));
 
         var exception = Should.Throw<PlatformNotSupportedException>(() =>
         {
-            using var server = new TestServer(webhostBuilder);
+            using var server = new TestServer(host.Services);
         });
 
         exception.Message.ShouldBe("WindowsServiceHealthCheck can only be registered in Windows Systems");

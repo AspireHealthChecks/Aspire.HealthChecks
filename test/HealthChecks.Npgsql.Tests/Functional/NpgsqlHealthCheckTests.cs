@@ -16,7 +16,7 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
     {
         var connectionString = postgreSQLContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -28,9 +28,9 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
                 {
                     Predicate = r => r.Tags.Contains("npgsql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -42,7 +42,7 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
     {
         var connectionString = postgreSQLContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -54,9 +54,9 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
                 {
                     Predicate = r => r.Tags.Contains("npgsql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -66,7 +66,7 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
     [Fact]
     public async Task be_unhealthy_if_npgsql_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -78,9 +78,9 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
                 {
                     Predicate = r => r.Tags.Contains("npgsql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -92,7 +92,7 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
     {
         var connectionString = postgreSQLContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddSingleton(new DBConfigSetting
@@ -109,9 +109,9 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
                 {
                     Predicate = r => r.Tags.Contains("npgsql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -121,7 +121,7 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
     [Fact]
     public async Task be_unhealthy_if_npgsql_is_not_available_registered()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddSingleton(new DBConfigSetting
@@ -138,9 +138,9 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
                 {
                     Predicate = r => r.Tags.Contains("npgsql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -152,7 +152,7 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
     {
         var connectionString = postgreSQLContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -169,9 +169,9 @@ public class npgsql_healthcheck_should(PostgreSQLContainerFixture postgreSQLCont
                 {
                     Predicate = r => r.Tags.Contains("npgsql")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

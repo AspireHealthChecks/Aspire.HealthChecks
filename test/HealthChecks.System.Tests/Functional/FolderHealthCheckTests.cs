@@ -7,7 +7,7 @@ public class folder_healthcheck_should
     [Fact]
     public async Task be_healthy_if_folder_is_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
            .ConfigureServices(services =>
            {
                services.AddHealthChecks()
@@ -19,9 +19,9 @@ public class folder_healthcheck_should
                {
                    Predicate = r => r.Tags.Contains("folder")
                });
-           });
+           }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -31,7 +31,7 @@ public class folder_healthcheck_should
     [Fact]
     public async Task be_healthy_if_no_folder_provided()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
            .ConfigureServices(services =>
            {
                services.AddHealthChecks()
@@ -45,9 +45,9 @@ public class folder_healthcheck_should
                {
                    Predicate = r => r.Tags.Contains("folder")
                });
-           });
+           }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -57,7 +57,7 @@ public class folder_healthcheck_should
     [Fact]
     public async Task be_unhealthy_if_folder_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -69,9 +69,9 @@ public class folder_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("folder")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

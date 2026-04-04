@@ -15,7 +15,7 @@ public class disk_storage_healthcheck_should
         var testDriveActualFreeMegabytes = testDrive.AvailableFreeSpace / 1024 / 1024;
         var targetFreeSpace = testDriveActualFreeMegabytes - 50;
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -27,9 +27,9 @@ public class disk_storage_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("diskstorage")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.EnsureSuccessStatusCode();
@@ -43,7 +43,7 @@ public class disk_storage_healthcheck_should
         var testDriveActualFreeMegabytes = testDrive.AvailableFreeSpace / 1024 / 1024;
         var targetFreeSpace = testDriveActualFreeMegabytes + 50;
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -55,9 +55,9 @@ public class disk_storage_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("diskstorage")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -66,7 +66,7 @@ public class disk_storage_healthcheck_should
     [Fact]
     public async Task be_unhealthy_when_a_configured_disk_does_not_exist()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -78,9 +78,9 @@ public class disk_storage_healthcheck_should
                 {
                     Predicate = r => r.Tags.Contains("diskstorage")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);

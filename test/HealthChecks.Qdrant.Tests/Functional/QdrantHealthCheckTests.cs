@@ -10,7 +10,7 @@ public class qdrant_healthcheck_should(QdrantContainerFixture qdrantContainerFix
     {
         string connectionString = qdrantContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -24,9 +24,9 @@ public class qdrant_healthcheck_should(QdrantContainerFixture qdrantContainerFix
                 {
                     Predicate = r => r.Tags.Contains("qdrant")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -38,7 +38,7 @@ public class qdrant_healthcheck_should(QdrantContainerFixture qdrantContainerFix
     {
         string connectionString = qdrantContainerFixture.GetConnectionString();
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -52,9 +52,9 @@ public class qdrant_healthcheck_should(QdrantContainerFixture qdrantContainerFix
                 {
                     Predicate = r => r.Tags.Contains("qdrant")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -64,7 +64,7 @@ public class qdrant_healthcheck_should(QdrantContainerFixture qdrantContainerFix
     [Fact]
     public async Task be_unhealthy_when_qdrant_is_unavailable()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -78,9 +78,9 @@ public class qdrant_healthcheck_should(QdrantContainerFixture qdrantContainerFix
                 {
                     Predicate = r => r.Tags.Contains("qdrant")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

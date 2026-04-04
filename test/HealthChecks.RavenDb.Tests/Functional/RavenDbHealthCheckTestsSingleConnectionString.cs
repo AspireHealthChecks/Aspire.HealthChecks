@@ -9,7 +9,7 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
     [Fact]
     public async Task be_healthy_if_ravendb_is_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -22,9 +22,9 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
                 {
                     Predicate = r => r.Tags.Contains("ravendb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -34,7 +34,7 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
     [Fact]
     public async Task be_healthy_if_ravendb_is_available_and_contains_specific_database()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -47,9 +47,9 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
                 {
                     Predicate = r => r.Tags.Contains("ravendb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -61,7 +61,7 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
     {
         var connectionString = "http://localhost:9999";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -74,9 +74,9 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
                 {
                     Predicate = r => r.Tags.Contains("ravendb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -86,7 +86,7 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
     [Fact]
     public async Task be_unhealthy_if_ravendb_is_available_but_database_doesnot_exist()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -103,9 +103,9 @@ public class ravendb_healthcheck_should_single_connection_string(RavenDbContaine
                 {
                     Predicate = r => r.Tags.Contains("ravendb")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

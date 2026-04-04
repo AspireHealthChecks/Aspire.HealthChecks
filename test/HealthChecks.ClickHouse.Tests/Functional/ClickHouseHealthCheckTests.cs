@@ -17,7 +17,7 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
     [Fact]
     public async Task be_healthy_if_ClickHouse_is_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -29,9 +29,9 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
                 {
                     Predicate = static r => r.Tags.Contains("ClickHouse")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -41,7 +41,7 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
     [Fact]
     public async Task be_unhealthy_if_sql_query_is_not_valid()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -53,9 +53,9 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
                 {
                     Predicate = static r => r.Tags.Contains("ClickHouse")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -65,7 +65,7 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
     [Fact]
     public async Task be_unhealthy_if_ClickHouse_is_not_available()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -80,9 +80,9 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
                 {
                     Predicate = r => r.Tags.Contains("ClickHouse")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -92,7 +92,7 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
     [Fact]
     public async Task be_healthy_if_ClickHouse_is_available_by_iServiceProvider_registered()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddSingleton(new DBConfigSetting
@@ -109,9 +109,9 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
                 {
                     Predicate = r => r.Tags.Contains("ClickHouse")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -121,7 +121,7 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
     [Fact]
     public async Task be_unhealthy_if_ClickHouse_is_not_available_registered()
     {
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddSingleton(new DBConfigSetting
@@ -142,9 +142,9 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
                 {
                     Predicate = r => r.Tags.Contains("ClickHouse")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -156,7 +156,7 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
     {
         const string connectionString = "Server=127.0.0.1;Port=8010;User ID=postgres;Password=Password12!;database=postgres";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -173,9 +173,9 @@ public class ClickHouse_healthcheck_should(ClickHouseContainerFixture clickHouse
                 {
                     Predicate = r => r.Tags.Contains("ClickHouse")
                 });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 

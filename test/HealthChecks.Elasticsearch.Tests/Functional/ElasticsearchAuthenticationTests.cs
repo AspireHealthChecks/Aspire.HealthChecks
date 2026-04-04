@@ -17,7 +17,7 @@ public class ElasticsearchAuthenticationTests : IClassFixture<ElasticContainerFi
     {
         var connectionString = @"https://localhost:9200";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -36,9 +36,9 @@ public class ElasticsearchAuthenticationTests : IClassFixture<ElasticContainerFi
             {
                 app.UseHealthChecks("/health",
                     new HealthCheckOptions { Predicate = r => r.Tags.Contains("elasticsearch") });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         var response = await server.CreateRequest("/health")
             .GetAsync();
@@ -52,7 +52,7 @@ public class ElasticsearchAuthenticationTests : IClassFixture<ElasticContainerFi
     {
         var connectionString = @"https://localhost:9200";
 
-        var webHostBuilder = new WebHostBuilder()
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services.AddHealthChecks()
@@ -71,9 +71,9 @@ public class ElasticsearchAuthenticationTests : IClassFixture<ElasticContainerFi
             {
                 app.UseHealthChecks("/health",
                     new HealthCheckOptions { Predicate = r => r.Tags.Contains("elasticsearch") });
-            });
+            }));
 
-        using var server = new TestServer(webHostBuilder);
+        using var server = new TestServer(host.Services);
 
         var response = await server.CreateRequest("/health")
             .GetAsync();
