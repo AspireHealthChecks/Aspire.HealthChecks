@@ -54,7 +54,11 @@ public class AzureServiceBusQueueHealthCheck : AzureServiceBusHealthCheck<AzureS
 
             if (completedTask == peekTask)
             {
+#if NET8_0_OR_GREATER
                 await linkedTokenSource.CancelAsync().ConfigureAwait(false);
+#else
+                linkedTokenSource.Cancel();
+#endif
             }
 
             await completedTask.ConfigureAwait(false);
