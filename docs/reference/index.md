@@ -3,81 +3,29 @@ title: Reference Manual
 permalink: /reference/
 ---
 
-The reference manual collects short implementation examples and the operational cautions that come up most often when integrating the packages in real services.
+The reference manual is now organized as themed chapters instead of mirroring the root README as one large page. Read it in order when you are onboarding a service, or jump directly to the area you are actively integrating.
 
-## Project README catalog
+## Core chapters
 
-- [Project READMEs]({{ '/reference/readmes/' | relative_url }}) publishes every repository `README.md` outside `docs/` under a generated documentation path.
-- Use it when you need package-specific defaults, extension setup notes, or the original per-project usage snippets.
+1. [Getting Started]({{ '/reference/getting-started/' | relative_url }})
+2. [Package Catalog]({{ '/reference/package-catalog/' | relative_url }})
+3. [Publishers And Metrics]({{ '/reference/publishers-and-metrics/' | relative_url }})
+4. [HealthChecks UI Manual]({{ '/reference/ui-manual/' | relative_url }})
+5. [Deployment And Integrations]({{ '/reference/deployment-and-integrations/' | relative_url }})
+6. [Tutorials And Samples]({{ '/reference/tutorials/' | relative_url }})
+7. [Contributing]({{ '/reference/contributing/' | relative_url }})
 
-## Basic package registration
+## Supporting material
 
-```csharp
-services
-    .AddHealthChecks()
-    .AddSqlServer(
-        connectionString: Configuration["ConnectionStrings:sql"],
-        healthQuery: "SELECT 1;",
-        name: "sql",
-        tags: new[] { "db", "sql", "ready" })
-    .AddRedis(
-        redisConnectionString: Configuration["ConnectionStrings:redis"],
-        name: "redis",
-        tags: new[] { "cache", "ready" });
-```
+- [Project READMEs]({{ '/reference/readmes/' | relative_url }}) contains generated pages for package, extension, and sample README files that live outside `docs/`.
+- [Documentation guides]({{ '/guides/' | relative_url }}) contains operational articles for Docker, webhooks, branding, and Kubernetes.
 
-Use focused package registrations instead of installing every package from the catalog. Each check should represent a dependency your service actually relies on.
+## Suggested reading paths
 
-## Separate liveness and readiness
+- If you are integrating health checks into a service for the first time, start with [Getting Started]({{ '/reference/getting-started/' | relative_url }}) and then continue to [Package Catalog]({{ '/reference/package-catalog/' | relative_url }}).
+- If you are rolling out the dashboard, jump to [HealthChecks UI Manual]({{ '/reference/ui-manual/' | relative_url }}) and then use the related guides.
+- If you are wiring telemetry export, open [Publishers And Metrics]({{ '/reference/publishers-and-metrics/' | relative_url }}).
+- If you are targeting containers, Kubernetes, Azure DevOps, or protected dashboards, open [Deployment And Integrations]({{ '/reference/deployment-and-integrations/' | relative_url }}).
 
-```csharp
-services
-    .AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "live" })
-    .AddSqlServer(
-        connectionString: Configuration["ConnectionStrings:sql"],
-        name: "sql",
-        failureStatus: HealthStatus.Degraded,
-        tags: new[] { "ready" });
-
-app.MapHealthChecks("/health/live", new HealthCheckOptions
-{
-    Predicate = registration => registration.Tags.Contains("live")
-});
-
-app.MapHealthChecks("/health/ready", new HealthCheckOptions
-{
-    Predicate = registration => registration.Tags.Contains("ready")
-});
-```
-
-This pattern keeps the process liveness signal lightweight while the readiness endpoint reflects downstream dependencies.
-
-## Add HealthChecks UI
-
-```csharp
-services
-    .AddHealthChecksUI(setup =>
-    {
-        setup.SetEvaluationTimeInSeconds(30);
-        setup.MaximumHistoryEntriesPerEndpoint(50);
-        setup.AddHealthCheckEndpoint("api", "/health/ready");
-    })
-    .AddInMemoryStorage();
-
-app.MapHealthChecksUI(options =>
-{
-    options.UIPath = "/healthchecks-ui";
-    options.ApiPath = "/healthchecks-api";
-});
-```
-
-If you need container-specific settings, continue with the [UI Docker image guide]({{ '/ui-docker/' | relative_url }}). If you need alerting payload examples, use the [webhooks guide]({{ '/webhooks/' | relative_url }}).
-
-## Operational notes
-
-- Keep health checks fast and deterministic. Expensive checks can turn a monitoring endpoint into a source of instability.
-- Tune `failureStatus`, tags, and polling cadence for each dependency instead of applying the same defaults everywhere.
-- Prefer readiness checks for external dependencies and reserve liveness checks for process-level validation.
-- When deploying in Kubernetes, combine this page with the [probe guide]({{ '/kubernetes-liveness/' | relative_url }}) and the [operator guide]({{ '/k8s-operator/' | relative_url }}).
-- The package naming in this repository follows the `Aspire.<project name>` convention shown in the root README.
+The generated README catalog remains available as appendix material, but the reference manual is now the primary narrative entry point for this site.
+Use the README appendix when you need package-level edge cases, but start from these chapters when you want the supported integration path.

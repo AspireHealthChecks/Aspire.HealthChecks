@@ -87,6 +87,7 @@ internal static partial class DocsReadmeGeneratorProgram
             Directory.CreateDirectory(_generatedRoot);
 
             var entries = EnumerateReadmes()
+                .Where(path => !string.Equals(GetNormalizedRelativePath(path), "README.md", StringComparison.OrdinalIgnoreCase))
                 .Select(WriteGeneratedReadmePage)
                 .OrderBy(static entry => entry.Category, StringComparer.Ordinal)
                 .ThenBy(static entry => entry.SourcePath, StringComparer.Ordinal)
@@ -191,7 +192,6 @@ internal static partial class DocsReadmeGeneratorProgram
 
             var orderedCategories = new[]
             {
-                "Repository",
                 "Extensions",
                 "Source Packages",
                 "Samples",
@@ -210,7 +210,7 @@ internal static partial class DocsReadmeGeneratorProgram
             builder.AppendLine("permalink: /reference/readmes/");
             builder.AppendLine("---");
             builder.AppendLine();
-            builder.AppendLine("This catalog is generated during the docs build. Every repository README outside the docs folder is published under a stable virtual path here.");
+            builder.AppendLine("This catalog is generated during the docs build. Package, extension, sample, and other subproject READMEs outside the docs folder are published under stable virtual paths here.");
             builder.AppendLine();
             builder.AppendLine($"Total generated pages: **{entries.Count}**.");
             builder.AppendLine();

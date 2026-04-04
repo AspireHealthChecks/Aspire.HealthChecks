@@ -51,8 +51,8 @@ AspNetCore.Diagnostics.HealthChecks is no longer maintained. We forked the proje
 ## Start here
 
 - [Documentation]({{ '/guides/' | relative_url }}) for Docker, UI, webhook, and Kubernetes guides.
-- [Reference Manual]({{ '/reference/' | relative_url }}) for copy-paste examples and operational notes.
-- [Project READMEs]({{ '/reference/readmes/' | relative_url }}) for generated package and extension usage pages sourced from the repository itself.
+- [Reference Manual]({{ '/reference/' | relative_url }}) for themed chapters covering setup, package selection, UI, publishers, and deployment.
+- [Project READMEs]({{ '/reference/readmes/' | relative_url }}) for generated package, extension, and sample usage pages sourced from the repository itself.
 - [News]({{ '/news/' | relative_url }}) for documentation updates and the UI changelog.
 
 ## Quick install
@@ -64,6 +64,6 @@ dotnet add package DotNetDiag.HealthChecks.SqlServer
 ## Coverage
 
 - 50+ health check packages for infrastructure and platform dependencies.
-- HealthChecks UI guidance for dashboard deployment, branding, and notifications.
+- HealthChecks UI guidance for dashboard deployment, branding, notifications, and configuration.
 - Kubernetes articles for probes, operator deployment, and service discovery.
-- Build-time generated README pages that publish project-level usage notes under stable virtual paths.
+- Themed reference chapters plus generated per-project README pages for detailed package notes.
