@@ -2,7 +2,9 @@ using Microsoft.Extensions.Hosting;
 
 public static class TestHostHelper
 {
-    public static IHost Build(Action<IWebHostBuilder> configureWebHost)
+    public static IHost Build(Action<IWebHostBuilder> configureWebHost) => Build(startHost: true, configureWebHost);
+
+    public static IHost Build(bool startHost, Action<IWebHostBuilder> configureWebHost)
     {
         var host = new HostBuilder()
             .ConfigureWebHost(webHostBuilder =>
@@ -12,7 +14,10 @@ public static class TestHostHelper
             })
             .Build();
 
-        host.StartAsync().GetAwaiter().GetResult();
+        if (startHost)
+        {
+            host.StartAsync().GetAwaiter().GetResult();
+        }
 
         return host;
     }

@@ -13,7 +13,7 @@ public class inmemory_storage_should
     {
         var customOptionsInvoked = false;
 
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureServices(services =>
             {

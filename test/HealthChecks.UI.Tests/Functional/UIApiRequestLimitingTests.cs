@@ -12,7 +12,7 @@ public class ui_api_request_limiting
     {
         int maxActiveRequests = 2;
 
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -57,7 +57,7 @@ public class ui_api_request_limiting
     [Fact]
     public async Task should_return_too_many_requests_status_using_default_server_max_active_requests()
     {
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services

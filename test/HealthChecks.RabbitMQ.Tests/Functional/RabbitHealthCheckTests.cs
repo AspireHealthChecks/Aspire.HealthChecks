@@ -26,7 +26,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 });
             }));
 
-        var server = host.GetTestServer();
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -54,7 +54,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 });
             }));
 
-        var server = host.GetTestServer();
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -94,7 +94,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 });
             }));
 
-        var server = host.GetTestServer();
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -131,7 +131,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 });
             }));
 
-        var server = host.GetTestServer();
+        using var server = new TestServer(host.Services);
 
         using var response = await server.CreateRequest("/health").GetAsync();
 
@@ -167,7 +167,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 });
             }));
 
-        var server = host.GetTestServer();
+        using var server = new TestServer(host.Services);
 
         using var response1 = await server.CreateRequest("/health").GetAsync();
         response1.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
@@ -201,7 +201,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 });
             }));
 
-        var server = host.GetTestServer();
+        using var server = new TestServer(host.Services);
 
         using var response1 = await server.CreateRequest("/health1").GetAsync();
         using var response2 = await server.CreateRequest("/health2").GetAsync();
@@ -228,7 +228,7 @@ public class rabbitmq_healthcheck_should(RabbitMQContainerFixture rabbitMQContai
                 });
             }));
 
-        var server = host.GetTestServer();
+        using var server = new TestServer(host.Services);
 
         using var response1 = await server.CreateRequest("/health").GetAsync();
         response1.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);

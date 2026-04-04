@@ -20,7 +20,7 @@ public class UI_Configuration_should
         var evaluationTimeInSeconds = 180;
         var minimumSeconds = 30;
 
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureServices(services =>
             {
@@ -59,7 +59,7 @@ public class UI_Configuration_should
     [Fact]
     public void load_ui_settings_from_configuration_key()
     {
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureAppConfiguration(conf =>
             {
@@ -96,7 +96,7 @@ public class UI_Configuration_should
         var webhookUri = "http://webhook2";
         var webhookPayload = "payload1";
 
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureAppConfiguration(conf =>
             {
@@ -146,7 +146,7 @@ public class UI_Configuration_should
         var webhookHandlerConfigured = false;
         var webhookClientConfigured = false;
 
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureAppConfiguration(conf =>
             {
@@ -195,7 +195,7 @@ public class UI_Configuration_should
     [Fact]
     public void register_server_addresses_service_to_resolve_relative_uris_using_endpoints()
     {
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .UseKestrel()
             .ConfigureServices(services =>
@@ -222,7 +222,7 @@ public class UI_Configuration_should
     [Fact]
     public void register_server_addresses_service_to_resolve_relative_uris_using_application_builder()
     {
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .UseKestrel()
             .ConfigureServices(services =>
@@ -242,7 +242,7 @@ public class UI_Configuration_should
     [Fact]
     public void have_enabled_database_migrations_by_default()
     {
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureServices(services =>
             {
@@ -259,7 +259,7 @@ public class UI_Configuration_should
     [Fact]
     public void allow_disable_running_database_migrations_in_ui_setup()
     {
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureServices(services =>
             {
@@ -277,7 +277,7 @@ public class UI_Configuration_should
     [Fact]
     public void allow_disable_running_database_migrations_using_configuration_providers()
     {
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureAppConfiguration(config =>
             {
@@ -306,7 +306,7 @@ public class UI_Configuration_should
     {
         const string pageTitle = "My Health Checks UI";
 
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services

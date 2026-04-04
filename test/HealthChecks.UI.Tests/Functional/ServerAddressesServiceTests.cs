@@ -12,7 +12,7 @@ public class server_addresses_service_should
     {
         var serverAddress = "http://localhost:5000";
 
-        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
             .UseUrls(serverAddress)
             .ConfigureServices(services => services.AddSingleton<ServerAddressesService>())
             .Configure(app =>
