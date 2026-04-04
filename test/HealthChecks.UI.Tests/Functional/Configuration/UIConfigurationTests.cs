@@ -20,7 +20,7 @@ public class UI_Configuration_should
         var evaluationTimeInSeconds = 180;
         var minimumSeconds = 30;
 
-        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .UseStartup<DefaultStartup>()
             .ConfigureServices(services =>
             {
@@ -306,7 +306,7 @@ public class UI_Configuration_should
     {
         const string pageTitle = "My Health Checks UI";
 
-        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services

@@ -14,7 +14,7 @@ public class UpdateConfigurationTests
         var updatedEndpointUri = $"{endpointUri}2";
 
         Func<string, ManualResetEventSlim, IHost> getHost = (uri, hostReset) =>
-            TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
+            TestHostHelper.Build(webHostBuilder => webHostBuilder
                 .ConfigureServices(services =>
                 {
                     services

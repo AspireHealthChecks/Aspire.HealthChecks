@@ -8,14 +8,18 @@ namespace HealthChecks.System.Tests.Functional;
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "Windows only")]
 public class windows_service__healthcheck_should
 {
+    private const string WindowsUpdateServiceName = "wuauserv";
+
     [SkipOnPlatform(Platform.LINUX, Platform.OSX)]
     public async Task be_healthy_when_the_service_is_running()
     {
         using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
-                services.AddHealthChecks()
-                    .AddWindowsServiceHealthCheck("Windows Update", s => s.StartType == ServiceStartMode.Manual);
+                // Use the canonical service name because the display name is localized.
+                services
+                    .AddHealthChecks()
+                    .AddWindowsServiceHealthCheck(WindowsUpdateServiceName, s => s.StartType == ServiceStartMode.Manual);
             })
             .Configure(app =>
             {

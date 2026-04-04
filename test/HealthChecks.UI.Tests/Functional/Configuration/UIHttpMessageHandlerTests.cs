@@ -16,7 +16,7 @@ public class UI_configuration_should
         var handler = new ClientHandler(tracer, new Dictionary<string, string> { [keyName] = valueName });
         var hostReset = new ManualResetEventSlim(false);
 
-        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -48,7 +48,7 @@ public class UI_configuration_should
         var hostReset = new ManualResetEventSlim(false);
         var tracer = Substitute.For<MessageHandlerTracer>();
 
-        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
@@ -86,7 +86,7 @@ public class UI_configuration_should
         var hostReset = new ManualResetEventSlim(false);
         var tracer = Substitute.For<MessageHandlerTracer>();
 
-        using var host = TestHostHelper.Build(startHost: false, webHostBuilder => webHostBuilder
+        using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
             {
                 services
