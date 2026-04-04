@@ -20,7 +20,7 @@ public static class IConfigurationBuilderExtensions
 
             if (AzureAppConfiguration.UseCacheExpiration)
             {
-                options.ConfigureRefresh(config => config.SetCacheExpiration(TimeSpan.FromSeconds(AzureAppConfiguration.CacheExpiration)));
+                options.ConfigureRefresh(config => config.SetRefreshInterval(TimeSpan.FromSeconds(AzureAppConfiguration.CacheExpiration)));
             }
 
             if (AzureAppConfiguration.UseLabel)
