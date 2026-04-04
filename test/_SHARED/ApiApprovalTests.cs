@@ -29,11 +29,17 @@ public class ApiApprovalTests
         });
 
         var location = Assembly.GetExecutingAssembly().Location;
-        var pathItems = location.Split(Path.DirectorySeparatorChar);
-        var index = Array.IndexOf(pathItems, "test");
-        Debug.Assert(index > 0 && index < pathItems.Length - 1);
+        var assemblyDirectory = new DirectoryInfo(Path.GetDirectoryName(location)!);
+        var projectDirectory = assemblyDirectory;
 
-        var subFolder = Path.Combine(pathItems.Take(index + 2).ToArray());
+        while (projectDirectory.Parent is not null && !string.Equals(projectDirectory.Parent.Name, "test", StringComparison.OrdinalIgnoreCase))
+        {
+            projectDirectory = projectDirectory.Parent;
+        }
+
+        Debug.Assert(projectDirectory.Parent is not null && string.Equals(projectDirectory.Parent.Name, "test", StringComparison.OrdinalIgnoreCase));
+
+        var subFolder = projectDirectory.FullName;
         var assemblyName = asmForTest.GetName().Name!;
         var approvedFilePath = Path.Combine(subFolder, $"{assemblyName}.approved.txt");
         var receivedFilePath = Path.Combine(subFolder, $"{assemblyName}.received.txt");
