@@ -64,7 +64,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     [Fact]
     public async Task be_healthy_on_connectionstring_specified_database_if_mongodb_is_available_and_database_exist()
     {
-        var connectionString = $"{mongoDbContainerFixture.GetConnectionString()}local";
+        var connectionString = WithDatabaseName(mongoDbContainerFixture.GetConnectionString(), "local");
 
         using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
@@ -121,7 +121,7 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
     public async Task be_healthy_on_connectionstring_specified_database_if_mongodb_is_available_and_database_not_exist()
     {
         // NOTE: with mongodb the database is created automatically the first time something is written to it
-        var connectionString = $"{mongoDbContainerFixture.GetConnectionString()}nonexisting";
+        var connectionString = WithDatabaseName(mongoDbContainerFixture.GetConnectionString(), "nonexisting");
 
         using var host = TestHostHelper.Build(webHostBuilder => webHostBuilder
             .ConfigureServices(services =>
@@ -198,5 +198,15 @@ public class mongodb_healthcheck_should(MongoDbContainerFixture mongoDbContainer
         using var response = await server.CreateRequest("/health").GetAsync();
 
         response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
+    }
+
+    private static string WithDatabaseName(string connectionString, string databaseName)
+    {
+        var builder = new MongoUrlBuilder(connectionString)
+        {
+            DatabaseName = databaseName,
+        };
+
+        return builder.ToString();
     }
 }

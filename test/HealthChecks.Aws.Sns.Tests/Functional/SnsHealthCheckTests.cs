@@ -1,4 +1,5 @@
 using System.Net;
+using Amazon;
 using Amazon.Runtime;
 
 namespace HealthChecks.Aws.Sns.Tests.Functional;
@@ -19,6 +20,7 @@ public class aws_sns_healthcheck_should(LocalStackContainerFixture localStackFix
                         {
                             options.Credentials = new BasicAWSCredentials("test", "test");
                             options.ServiceURL = connectionString;
+                            options.RegionEndpoint = RegionEndpoint.USEast1;
                             options.AddTopicAndSubscriptions("healthchecks");
                         },
                         tags: ["sns"]);
@@ -51,6 +53,7 @@ public class aws_sns_healthcheck_should(LocalStackContainerFixture localStackFix
                         {
                             options.Credentials = new BasicAWSCredentials("test", "test");
                             options.ServiceURL = connectionString;
+                            options.RegionEndpoint = RegionEndpoint.USEast1;
                             options.AddTopicAndSubscriptions("missing");
                         },
                         tags: ["sns"]);

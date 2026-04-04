@@ -5,11 +5,7 @@ namespace HealthChecks.UI.Tests;
 
 public class mysql_storage_should
 {
-#if NET10_0
-    private const string PROVIDER_NAME = "Microting.EntityFrameworkCore.MySql";
-#else
     private const string PROVIDER_NAME = "Pomelo.EntityFrameworkCore.MySql";
-#endif
 
     [Fact]
     public void register_healthchecksdb_context_with_migrations()
