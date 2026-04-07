@@ -1,14 +1,46 @@
-## HealthChecks.IoTDB
+## Apache IoTDB Health Check
 
-Package provides an `IHealthCheck` implementation for Apache IoTDB using `Apache.IoTDB.Data`.
+This health check verifies the ability to communicate with [Apache IoTDB](https://iotdb.apache.org/). It uses the [Apache.IoTDB.Data](https://www.nuget.org/packages/Apache.IoTDB.Data) library.
 
-### Nuget
+## NuGet
 
 [![Nuget](https://img.shields.io/nuget/v/DotNetDiag.HealthChecks.IoTDB)](https://www.nuget.org/packages/DotNetDiag.HealthChecks.IoTDB)
 
-### Usage
+```shell
+dotnet add package DotNetDiag.HealthChecks.IoTDB
+```
+
+## Example Usage
+
+With all of the following examples, you can additionally add the following parameters:
+
+- `name`: The health check name. Default if not specified is `iotdb`.
+- `failureStatus`: The `HealthStatus` that should be reported when the health check fails. Default is `HealthStatus.Unhealthy`.
+- `tags`: A list of tags that can be used to filter sets of health checks.
+- `timeout`: A `System.TimeSpan` representing the timeout of the check.
+
+### Use a connection string
 
 ```csharp
-services.AddHealthChecks()
-    .AddIoTDB("host=localhost;port=6667;user=root;password=root");
+void Configure(IHealthChecksBuilder builder)
+{
+    builder.Services
+        .AddHealthChecks()
+        .AddIoTDB("host=localhost;port=6667;user=root;password=root");
+}
+```
+
+### Use `IoTDBHealthCheckOptions` for advanced configuration
+
+```csharp
+void Configure(IHealthChecksBuilder builder)
+{
+    builder.Services
+        .AddHealthChecks()
+        .AddIoTDB(new IoTDBHealthCheckOptions
+        {
+            ConnectionString = "host=localhost;port=6667;user=root;password=root",
+            EnableRpcCompression = true
+        });
+}
 ```

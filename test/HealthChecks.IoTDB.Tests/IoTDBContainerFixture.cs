@@ -5,7 +5,7 @@ namespace HealthChecks.IoTDB.Tests;
 
 public class IoTDBContainerFixture : IAsyncLifetime
 {
-    private const string Image = "apache/iotdb:1.0.0-datanode";
+    private const string Image = "apache/iotdb:1.3.3-standalone";
     private const int IoTDBPort = 6667;
 
     public IContainer? Container { get; private set; }
