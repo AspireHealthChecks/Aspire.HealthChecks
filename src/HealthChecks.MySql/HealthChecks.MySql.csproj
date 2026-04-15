@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(ExtendedLibraryTargetFrameworks)</TargetFrameworks>
-    <PackageTags>$(PackageTags);MySQL</PackageTags>
+    <PackageTags>$(PackageTags);MySql</PackageTags>
     <Description>HealthChecks.MySql is the health check package for MySQL.</Description>
   </PropertyGroup>
 
