@@ -23,6 +23,10 @@
     <ProjectReference Include="..\..\src\HealthChecks.UI\HealthChecks.UI.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <Compile Remove="Functional\DatabaseProviders\DockerImageStorageProviderTests.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Update="SampleData\local-cluster-discovery-sample.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
