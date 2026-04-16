@@ -2,6 +2,17 @@ name: Legacy HealthChecks Milvus Preview CD
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - src/HealthChecks.Milvus/**
+      - .github/workflows/healthchecks_milvus_cd_preview.yml
+      - Directory.Build.props
+      - Directory.Build.targets
+      - Directory.Packages.props
+      - src/Directory.Build.props
+      - src/ApiMarker.cs
+      - src/CallerArgumentExpressionAttribute.cs
 
 jobs:
   build:
