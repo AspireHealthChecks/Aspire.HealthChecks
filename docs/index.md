@@ -1,11 +1,17 @@
 ---
-layout: default
+layout: landing
 title: DotNetDiag HealthChecks
 description: Health checks for services, dashboards, and Kubernetes workloads.
+permalink: /
 show_title: false
+hero_eyebrow: DotNetDiag HealthChecks
+hero_title: DotNetDiag HealthChecks
+hero_subtitle: Health checks for services, dashboards, and Kubernetes workloads.
+hero_primary_url: /reference/
+hero_primary_label: Open Manual
+hero_secondary_url: /guides/
+hero_secondary_label: Browse Guides
 ---
-
-{% include hero.html title="DotNetDiag HealthChecks" subtitle="Health checks for services, dashboards, and Kubernetes workloads." primary_url="/reference/" primary_label="Open Manual" secondary_url="/guides/" secondary_label="Browse Guides" %}
 
 > Maintained by {{ site.data.authors.primary.name }} / {{ site.data.authors.primary.role }}
 
